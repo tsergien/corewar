@@ -3,21 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsergien <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ikotvits <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/21 12:18:59 by tsergien          #+#    #+#             */
-/*   Updated: 2018/03/21 12:19:02 by tsergien         ###   ########.fr       */
+/*   Created: 2018/03/20 14:49:45 by ikotvits          #+#    #+#             */
+/*   Updated: 2018/03/20 14:49:47 by ikotvits         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-char	*ft_strchr(const char *s, int c)
+char	*ft_strchr(const char *string, int symbol)
 {
-	char	*cs;
+	char c;
 
-	cs = (char *)s;
-	while (*cs != 0 && *cs != (char)c)
-		cs++;
-	if (*cs != '\0' || (char)c == '\0')
-		return (cs);
-	return (0);
+	c = (char)symbol;
+	while (string && *string != c)
+	{
+		if (!*string)
+			return (0);
+		string++;
+	}
+	return (char *)string;
 }

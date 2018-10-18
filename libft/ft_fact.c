@@ -1,29 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_newmatrix.c                                     :+:      :+:    :+:   */
+/*   ft_fact.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsergien <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ikotvits <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/06 13:24:22 by tsergien          #+#    #+#             */
-/*   Updated: 2018/04/06 13:24:25 by tsergien         ###   ########.fr       */
+/*   Created: 2018/03/26 20:28:12 by ikotvits          #+#    #+#             */
+/*   Updated: 2018/03/26 20:28:13 by ikotvits         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/libft.h"
-
-void	**ft_newmatrix(size_t m, size_t n, size_t size)
+int		ft_fact(int nb)
 {
-	size_t	i;
-	void	**matrix;
+	int res;
 
-	i = 0;
-	matrix = (void **)malloc(size * n);
-	while (i < n)
+	if (nb < 0 || nb > 12)
+		return (0);
+	res = 1;
+	while (nb > 1)
 	{
-		matrix[i] = (void *)malloc(size * m);
-		i++;
+		res *= nb;
+		nb--;
 	}
-	matrix[i] = 0;
-	return (matrix);
+	return (res);
 }

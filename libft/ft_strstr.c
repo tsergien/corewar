@@ -1,39 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bzero.c                                            :+:      :+:    :+:   */
+/*   ft_strstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsergien <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ikotvits <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/21 12:18:59 by tsergien          #+#    #+#             */
-/*   Updated: 2018/03/21 12:19:02 by tsergien         ###   ########.fr       */
+/*   Created: 2018/03/20 16:00:42 by ikotvits          #+#    #+#             */
+/*   Updated: 2018/03/20 16:00:43 by ikotvits         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/libft.h"
+#include "libft.h"
 
-char	*ft_strstr(const char *haystack, const char *needle)
+char	*ft_strstr(const char *string1, const char *string2)
 {
-	char *needle_tip;
-	char *hs;
-	char *result;
+	const char	*res;
+	const char	*start;
 
-	hs = (char *)haystack;
-	needle_tip = (char *)needle;
-	if (ft_strlen(needle) == 0)
-		return (hs);
-	while (*hs != '\0')
+	if (*string2 == '\0')
+		return (char *)string1;
+	while (*string1)
 	{
-		result = hs;
-		while (*result == *needle && *needle != '\0')
+		start = string2;
+		res = string1;
+		while (*string1 == *string2)
 		{
-			result++;
-			needle++;
+			string1++;
+			string2++;
+			if (*string2 == '\0')
+				return (char *)res;
 		}
-		if (*needle == '\0')
-			return (hs);
-		needle = needle_tip;
-		hs++;
+		string2 = start;
+		string1 = ++res;
 	}
 	return (0);
 }

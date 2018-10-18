@@ -3,24 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsergien <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ikotvits <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/21 12:18:59 by tsergien          #+#    #+#             */
-/*   Updated: 2018/03/21 12:19:02 by tsergien         ###   ########.fr       */
+/*   Created: 2018/03/20 12:16:43 by ikotvits          #+#    #+#             */
+/*   Updated: 2018/03/20 12:16:45 by ikotvits         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 char	*ft_strcpy(char *dst, const char *src)
 {
-	char *b;
+	int i;
 
-	b = dst;
-	while (*src != '\0')
-	{
-		*dst = *src;
-		dst++;
-		src++;
-	}
-	*dst = '\0';
-	return (b);
+	i = -1;
+	while (src[++i] != '\0')
+		dst[i] = src[i];
+	dst[i] = '\0';
+	return (dst);
 }

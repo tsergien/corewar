@@ -1,38 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin_free_one2.c                             :+:      :+:    :+:   */
+/*   ft_strjoinfree.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsergien <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ikotvits <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/05/08 14:11:56 by tsergien          #+#    #+#             */
-/*   Updated: 2018/05/08 14:11:58 by tsergien         ###   ########.fr       */
+/*   Created: 2018/03/26 20:08:37 by ikotvits          #+#    #+#             */
+/*   Updated: 2018/03/26 20:08:38 by ikotvits         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/libft.h"
+#include "libft.h"
+#include <stdio.h>
 
-char	*ft_strjoin_free_one2(char const *s1, char **s2)
+char	*ft_strjoinfree(char **s1, char *s2)
 {
 	char			*p;
 	char			*b;
 	unsigned long	len;
 	unsigned long	i;
 
-	i = 0;
-	if (!s2 || (!(*s2) && !(s1)))
+	if (!s1 && !s2)
 		return (0);
-	len = ft_strlen(*s2) + ft_strlen(s1);
-	p = ft_strnew(len);
+	len = ft_strlen(*s1) + ft_strlen(s2);
+	p = (len) ? ft_strnew(len) : NULL;
 	b = p;
 	if (!p)
 		return (0);
 	i = 0;
-	while (*(s1 + i))
-		*p++ = *(s1 + i++);
+	while (s1 && *s1 && *(*s1 + i))
+		*p++ = *(*s1 + i++);
 	i = 0;
-	while (*s2 && *(*s2 + i))
-		*p++ = *(*s2 + i++);
-	ft_strdel(s2);
+	while (*(s2 + i))
+		*p++ = *(s2 + i++);
+	if (s1 && *s1)
+		ft_strdel(s1);
 	return (b);
 }

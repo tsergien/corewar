@@ -3,76 +3,83 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strsplit.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsergien <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ikotvits <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/04 15:01:32 by tsergien          #+#    #+#             */
-/*   Updated: 2018/04/04 15:01:49 by tsergien         ###   ########.fr       */
+/*   Created: 2018/03/22 18:58:46 by ikotvits          #+#    #+#             */
+/*   Updated: 2018/03/31 17:15:09 by ikotvits         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/libft.h"
+#include "libft.h"
 
-static int	count_words(char const *s, char c)
+static int		words(char const *s, char c)
 {
-	int		res;
+	int i;
+	int t;
+	int check;
 
-	if (!s)
-		return (0);
-	res = 0;
-	while (*s)
+	i = 0;
+	t = 0;
+	check = 0;
+	while (s && s[t] != '\0')
 	{
-		while (*s == c && *s != '\0')
+		if (s[t] == c && check)
+			check = 0;
+		else if (s[t] != c && !check)
+		{
+			check = 1;
+			i++;
+		}
+		t++;
+	}
+	return (i + 1);
+}
+
+static int		letters(char const *s, char c)
+{
+	int i;
+
+	i = 0;
+	while (s && *s && *(s++) != c)
+		i++;
+	return (i + 1);
+}
+
+static	int		ft_free(char **mass)
+{
+	while (*mass)
+	{
+		free(*mass);
+		mass++;
+	}
+	free(mass);
+	return (1);
+}
+
+char			**ft_strsplit(char const *s, char c)
+{
+	char **mass;
+	char *test;
+	char **tes;
+
+	if (!s || (!(mass = (char **)malloc(sizeof(char *) * words(s, c)))))
+		return (0);
+	tes = mass;
+	while (s && *s)
+	{
+		while (s && *s == c)
 			s++;
-		if (*s != '\0')
-		{
-			res++;
-			while (*s != '\0' && *s != c)
-				s++;
-		}
-	}
-	return (res);
-}
-
-static int	len_till_c(const char *ptr, char c)
-{
-	int		i;
-
-	i = 0;
-	while (*ptr == c)
-		ptr++;
-	while (*ptr != c && *ptr)
-	{
-		ptr++;
-		i++;
-	}
-	return (i);
-}
-
-char		**ft_strsplit(char const *ptr, char c)
-{
-	char	**news;
-	int		i;
-
-	i = 0;
-	if (!ptr || !c)
-		return (NULL);
-	if (!(news = (char **)malloc(sizeof(char *) * (count_words(ptr, c) + 1))))
-		return (0);
-	while (*ptr)
-	{
-		while (*ptr == c && *ptr)
-			ptr++;
-		if (*ptr == '\0')
+		if (s && (!*s))
 			break ;
-		if (!(news[i] = ft_strnew(len_till_c(ptr, c))))
-		{
-			news[0] = 0;
-			return (news);
-		}
-		ft_strncpy(news[i], ptr, len_till_c(ptr, c));
-		ptr = ptr + len_till_c(ptr, c);
-		i++;
+		if (!(*mass = (char *)malloc(letters(s, c))) && ft_free(tes))
+			return (0);
+		test = *mass;
+		while (s && *s && *s != c)
+			*(*mass)++ = *(s++);
+		**mass = '\0';
+		*mass = test;
+		mass++;
 	}
-	news[i] = 0;
-	return (news);
+	*mass = 0;
+	return (tes);
 }

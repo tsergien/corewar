@@ -1,31 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstpush_back.c                                  :+:      :+:    :+:   */
+/*   ft_lstbackadd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsergien <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ikotvits <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/06 13:07:43 by tsergien          #+#    #+#             */
-/*   Updated: 2018/04/06 13:07:57 by tsergien         ###   ########.fr       */
+/*   Created: 2018/03/26 17:52:43 by ikotvits          #+#    #+#             */
+/*   Updated: 2018/03/26 17:52:44 by ikotvits         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/libft.h"
+#include "libft.h"
 
-void	ft_lstpush_back(t_list **alst, t_list *new)
+void	ft_lstbackadd(t_list **alst, t_list *new)
 {
-	t_list	*current;
+	t_list	*list;
+	t_list	*add;
 
-	if (!alst || !new)
+	if (!alst || !(*alst))
 		return ;
-	current = *alst;
-	if (!current)
+	list = *alst;
+	if (list && new)
 	{
-		*alst = new;
-		return ;
+		while (list->next)
+			list = list->next;
+		add = new;
+		list->next = add;
 	}
-	while (current->next)
-		current = current->next;
-	current->next = new;
-	new->next = NULL;
 }

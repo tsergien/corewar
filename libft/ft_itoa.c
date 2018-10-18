@@ -3,65 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsergien <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ikotvits <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/04 17:28:08 by tsergien          #+#    #+#             */
-/*   Updated: 2018/04/04 17:28:19 by tsergien         ###   ########.fr       */
+/*   Created: 2018/03/21 19:00:43 by ikotvits          #+#    #+#             */
+/*   Updated: 2018/03/21 19:00:44 by ikotvits         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/libft.h"
+#include "libft.h"
 
-static int	len_n(int cp)
+char	*ft_itoa(int n)
 {
-	int len;
+	char	*str;
+	int		len;
+	int		tmp;
 
 	len = 0;
-	if (cp == 0 || cp == -0)
-		return (1);
-	while (cp)
-	{
-		cp = cp / 10;
+	tmp = n;
+	while ((tmp /= 10) != 0)
 		len++;
-	}
-	return (len);
-}
-
-static void	fill_s(char **s, int n, int negative, int len)
-{
-	char *str;
-
-	str = *s;
-	while (len)
-	{
-		*(str + len-- - 1 + negative) = n % 10 + '0';
-		n = n / 10;
-	}
-}
-
-char		*ft_itoa(int n)
-{
-	char	*s;
-	int		len;
-	int		negative;
-
-	negative = 0;
-	len = len_n(n);
 	if (n < 0)
-		negative = 1;
-	s = ft_strnew(len + negative);
-	if (!s)
+		len++;
+	if (!(str = ft_memalloc(sizeof(char) * (len + 2))))
 		return (0);
 	if (n == -2147483648)
+		return (ft_strdup("-2147483648"));
+	if (n < 0 && (n = -n))
+		str[0] = '-';
+	str[len + 1] = '\0';
+	while (len >= 0 && str[len] != '-')
 	{
-		ft_strcpy(s, "-2147483648");
-		return (s);
+		str[len--] = n % 10 + '0';
+		n /= 10;
 	}
-	if (negative)
-	{
-		*s = '-';
-		n = -n;
-	}
-	fill_s(&s, n, negative, len);
-	return (s);
+	return (str);
 }

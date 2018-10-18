@@ -1,41 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bzero.c                                            :+:      :+:    :+:   */
+/*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsergien <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ikotvits <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/21 12:18:59 by tsergien          #+#    #+#             */
-/*   Updated: 2018/03/21 12:19:02 by tsergien         ###   ########.fr       */
+/*   Created: 2018/03/20 16:14:25 by ikotvits          #+#    #+#             */
+/*   Updated: 2018/03/20 16:14:27 by ikotvits         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/libft.h"
+#include "libft.h"
 
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 {
-	char	*needle_tip;
-	char	*hs;
-	char	*result;
-	int		j;
+	const char	*res;
+	const char	*start;
+	size_t		l;
 
-	hs = (char *)haystack;
-	needle_tip = (char *)needle;
-	if (ft_strlen(needle) == 0)
-		return (hs);
-	while (*hs != '\0' && len--)
+	if (*needle == '\0')
+		return (char *)haystack;
+	start = needle;
+	while (*haystack != '\0' && len > 0 && *haystack)
 	{
-		result = hs;
-		j = len + 1;
-		while (*result == *needle && *needle != '\0' && j--)
+		needle = start;
+		res = haystack;
+		l = len;
+		while (*haystack == *needle && len > 0)
 		{
-			result++;
+			haystack++;
 			needle++;
+			if (*needle == '\0')
+				return (char *)res;
+			len--;
 		}
-		if (*needle == '\0')
-			return (hs);
-		needle = needle_tip;
-		hs++;
+		len = l;
+		haystack = ++res;
+		len--;
 	}
 	return (0);
 }

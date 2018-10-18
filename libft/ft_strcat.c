@@ -3,27 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strcat.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsergien <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ikotvits <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/21 12:18:59 by tsergien          #+#    #+#             */
-/*   Updated: 2018/04/12 16:10:05 by tsergien         ###   ########.fr       */
+/*   Created: 2018/03/20 13:05:14 by ikotvits          #+#    #+#             */
+/*   Updated: 2018/03/20 13:05:17 by ikotvits         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-char	*ft_strcat(char *restrict s1, const char *restrict s2)
+char	*ft_strcat(char *destptr, const char *srcptr)
 {
-	unsigned long	i;
-	unsigned long	j;
+	int i;
+	int j;
 
 	i = 0;
-	while (s1[i] != '\0')
+	while (destptr[i] != '\0')
 		i++;
 	j = 0;
-	while (s2[j] != '\0')
-	{
-		s1[i + j] = s2[j];
-		j++;
-	}
-	s1[i + j] = '\0';
-	return (s1);
+	while (srcptr[j] != '\0')
+		destptr[i++] = srcptr[j++];
+	destptr[i] = '\0';
+	return (destptr);
 }

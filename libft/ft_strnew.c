@@ -3,28 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsergien <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ikotvits <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/03 16:35:42 by tsergien          #+#    #+#             */
-/*   Updated: 2018/04/03 16:36:24 by tsergien         ###   ########.fr       */
+/*   Created: 2018/03/21 21:26:35 by ikotvits          #+#    #+#             */
+/*   Updated: 2018/03/31 17:16:38 by ikotvits         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/libft.h"
+#include "libft.h"
 
 char	*ft_strnew(size_t size)
 {
-	char *s;
-	char *ptr;
+	size_t	i;
+	char	*c;
 
-	s = (char *)ft_memalloc(size + 1);
-	ptr = s;
-	if (s == 0)
+	i = 0;
+	if (!(c = (char*)malloc(size + 1)))
 		return (0);
-	while (size > 0)
-	{
-		*ptr++ = '\0';
-		size--;
-	}
-	return (s);
+	while (i <= size)
+		c[i++] = '\0';
+	return (c);
 }

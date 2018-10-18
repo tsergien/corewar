@@ -3,22 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   ft_swap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsergien <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ikotvits <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/05 18:01:58 by tsergien          #+#    #+#             */
-/*   Updated: 2018/04/05 18:02:40 by tsergien         ###   ########.fr       */
+/*   Created: 2018/03/26 20:24:27 by ikotvits          #+#    #+#             */
+/*   Updated: 2018/03/26 20:24:28 by ikotvits         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/libft.h"
+#include "libft.h"
 
-void	ft_swap(void *a, void *b, size_t size)
+void	ft_lstpushback(t_list **begin_list, void *content, size_t content_size)
 {
-	void	*temp;
+	t_list	*list;
 
-	temp = malloc(size);
-	ft_memcpy(temp, a, size);
-	ft_memcpy(a, b, size);
-	ft_memcpy(b, temp, size);
-	free(temp);
+	list = *begin_list;
+	if (list)
+	{
+		while (list->next)
+			list = list->next;
+		list->next = ft_lstnew(content, content_size);
+	}
+	else
+		*begin_list = ft_lstnew(content, content_size);
 }

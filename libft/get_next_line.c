@@ -3,95 +3,54 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsergien <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ikotvits <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/18 15:47:04 by tsergien          #+#    #+#             */
-/*   Updated: 2018/04/18 15:47:05 by tsergien         ###   ########.fr       */
+/*   Created: 2018/04/18 13:55:50 by ikotvits          #+#    #+#             */
+/*   Updated: 2018/04/18 13:56:01 by ikotvits         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "libft.h"
 
-t_gnl	*init(t_gnl *lst, int fd)
+int		help(t_gnl *s, char **line)
 {
-	while (lst->next && lst->fd != fd)
-		lst = lst->next;
-	if (lst->fd == fd)
-		return (lst);
-	lst->next = (t_gnl *)malloc(sizeof(t_gnl));
-	lst->next->fd = fd;
-	lst->next->str = 0;
-	lst->next->next = NULL;
-	return (lst->next);
-}
-
-int		read_while(t_gnl *gnl)
-{
-	char			*buf;
-	int				rt;
-	int				been_read;
-
-	been_read = 0;
-	buf = ft_strnew(BUFF_SIZE);
-	while ((rt = read(gnl->fd, buf, BUFF_SIZE)) > 0)
+	if ((s->p = ft_strchr(s->b, '\n')))
+		*(s->p) = '\0';
+	*line = ft_strjoinfree(line, s->b);
+	if (s->p)
 	{
-		been_read = 1;
-		buf[rt] = '\0';
-		gnl->str = ft_strjoin_free_one(&gnl->str, buf);
-		if (ft_strchr(gnl->str, DELIM))
-			break ;
-	}
-	ft_strdel(&buf);
-	if (gnl->str == NULL && !been_read)
-		return (0);
-	return (1);
-}
-
-int		write_to_line(char **line, t_gnl *gnl)
-{
-	char			*tmp;
-	char			*ptr;
-
-	if (*gnl->str == 0)
-	{
-		ft_strdel(&gnl->str);
-		return (0);
-	}
-	if ((tmp = ft_strchr(gnl->str, DELIM)))
-	{
-		*line = ft_strsub(gnl->str, 0, tmp - gnl->str);
-		*tmp++ = '\0';
-		ptr = ft_strdup(tmp);
-		ft_strdel(&gnl->str);
-		gnl->str = ptr;
+		if (!(*line))
+			*line = ft_strdup("");
+		ft_memmove(s->b, s->p + 1, ft_strlen(s->p + 1) + 1);
 		return (1);
 	}
-	else
-	{
-		*line = ft_strdup(gnl->str);
-		if (ft_strlen(*line) == 0)
-			*line = NULL;
-	}
-	*gnl->str = 0;
-	return (1);
+	ft_bzero(s->b, BUFF + 1);
+	return (0);
 }
 
 int		get_next_line(const int fd, char **line)
 {
-	static t_gnl	*list;
-	t_gnl			*gnl;
+	static t_gnl *s;
 
-	if (fd < 0 || read(fd, 0, 0) < 0 || BUFF_SIZE < 1 || !line)
-		return (-1);
-	if (!list)
+	if (!s)
 	{
-		list = (t_gnl *)malloc(sizeof(t_gnl));
-		list->fd = fd;
-		list->str = 0;
-		list->next = NULL;
+		if (!(s = (t_gnl *)malloc(sizeof(t_gnl))))
+			return (-1);
+		ft_bzero(s->b, BUFF + 1);
 	}
-	gnl = init(list, fd);
-	if (!read_while(gnl))
+	if (fd < 0 || read(fd, 0, 0) < 0 || !line || fd > 256)
+		return (-1);
+	*line = NULL;
+	if (help(s, line))
+		return (1);
+	while (read(fd, s->b, BUFF))
+	{
+		if (help(s, line))
+			return (1);
+		else
+			ft_bzero(s->b, BUFF + 1);
+	}
+	if (!(*line))
 		return (0);
-	return (write_to_line(line, gnl));
+	return (1);
 }

@@ -3,38 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsergien <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ikotvits <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/04/05 17:53:51 by tsergien          #+#    #+#             */
-/*   Updated: 2018/04/05 17:54:13 by tsergien         ###   ########.fr       */
+/*   Created: 2018/03/26 17:36:44 by ikotvits          #+#    #+#             */
+/*   Updated: 2018/03/26 17:36:45 by ikotvits         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/libft.h"
+#include "libft.h"
 
 t_list	*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem))
 {
-	t_list	*l;
-	t_list	*new_list;
-	t_list	*fl;
+	t_list	*res;
+	t_list	*begin;
 
 	if (!lst || !f)
-		return (NULL);
-	fl = f(lst);
-	new_list = ft_lstnew(fl->content, fl->content_size);
-	if (new_list != NULL)
+		return (0);
+	res = (t_list *)malloc(sizeof(t_list));
+	res = f(lst);
+	begin = res;
+	while (lst->next)
 	{
-		l = new_list;
 		lst = lst->next;
-		while (lst)
+		if (!(res->next = f(lst)))
 		{
-			fl = f(lst);
-			l->next = ft_lstnew(fl->content, fl->content_size);
-			if (l->next == NULL)
-				return (NULL);
-			l = l->next;
-			lst = lst->next;
+			free(begin);
+			return (0);
 		}
+		res = res->next;
 	}
-	return (new_list);
+	return (begin);
 }
