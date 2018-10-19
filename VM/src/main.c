@@ -1,20 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   vm_get_champ.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tsergien <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/10/18 15:40:04 by tsergien          #+#    #+#             */
+/*   Updated: 2018/10/18 15:42:27 by tsergien         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <fcntl.h>
 #include "../includes/vm_corewar.h"
-
-unsigned int	rev(int fd)
-{
-	unsigned int rev;
-	unsigned int magic;
-	unsigned char *rev_mag = (unsigned char *)&magic;
-	unsigned char *rev_int = (unsigned char *)&rev;
-	
-	read(fd, &magic, 4);
-	rev_int[3] = rev_mag[0];
-	rev_int[2] = rev_mag[1];
-	rev_int[1] = rev_mag[2];
-	rev_int[0] = rev_mag[3];
-	return (rev);
-}
 
 void		ft_error(char *str)
 {
@@ -22,62 +19,38 @@ void		ft_error(char *str)
 	exit(0);
 }
 
-void		exec_get(int fd, header_t *tanya)
+static void	usage(void)
 {
-	int				i;
-	unsigned char	temp;
-	t_game			*g;
-	
-	i = -1;
-	g = (t_game *)malloc(sizeof(t_game));
-	while (++i <= tanya->prog_size)
-	{
-		read(fd, &temp, 1);
-		g->map[i].byte = temp;
-	}
+	ft_printf("usage: ./corewar player1.cor [player2.cor] \
+[player3.cor] [player4.cor]\n");
+	exit(0);
 }
 
-int	main(int ac, char **av)
+int			main(int argc, char **argv)
 {
-	ac--;
-	int				fd;
-	int				i;
-	header_t		*tanya;
-	unsigned char	*str;
-	unsigned int	temp;
+	int			i;
+	int			fd;
+	t_game		*g;
 
-	tanya = (header_t *)malloc(sizeof(header_t));
-	fd = open(av[1], O_RDONLY);
-	tanya->magic = rev(fd);
-	if (tanya->magic != COREWAR_EXEC_MAGIC)
-		ft_error("No magic header!\n");
-	ft_strclr(tanya->prog_name);
+	if (argc < 2 || argc > 5)
+		usage();
+	g = (t_game *)malloc(sizeof(t_game));
+	g->champs_num = 0;
+	ft_printf("champs_num: %d\n", g->champs_num);
 	i = 0;
-	while (i + 4 <= PROG_NAME_LENGTH)
+	for (int i = 0; i < MEM_SIZE; i++)
 	{
-		read(fd, &temp, 4);
-		str = (unsigned char *)&temp;
-		ft_strncpy(tanya->prog_name + i, (const char *)str, 4);
-		i += 4;
+		g->map[i].champ = 0;
 	}
-	ft_printf("%s\n", tanya->prog_name);
-	
-	read(fd, &temp, 4);
-	tanya->prog_size = rev(fd);
-	ft_printf("%u\n", tanya->prog_size);
-	if (tanya->prog_size > CHAMP_MAX_SIZE)
-		ft_error("Too big exec\n");
-	i = 0;
-	ft_strclr(tanya->comment);
-	while (i + 4 <= COMMENT_LENGTH)
+	g->champs_num = argc - 1;
+	while (++i < argc)
 	{
-		read(fd, &temp, 4);
-		str = (unsigned char *)&temp;
-		ft_strncpy(tanya->comment + i, (const char *)str, 4);
-		i += 4;
+		fd = open(argv[i], O_RDONLY);
+		get_champ(g, fd, i - 1);
+		ft_printf("%s\n", g->champ[i - 1].comment);
+		ft_printf("%s\n", g->champ[i - 1].prog_name);
+		ft_printf("%u\n", g->champ[i - 1].prog_size);
 	}
-	ft_printf("%s\n", tanya->comment);
-	read(fd, &temp, 4);
-	exec_get(fd, tanya);
+	show_field(g);
 	return (0);
 }

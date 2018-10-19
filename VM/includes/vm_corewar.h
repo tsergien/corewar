@@ -14,7 +14,10 @@
 #define VM_COREWAR_H
 #include "../../libft/libft.h"
 #include "op.h"
+#include <ncurses.h>
 
-
+void			ft_error(char *str);
+void			get_champ(t_game *g, int fd, int ind);
+void			show_field(t_game *g);
 
 #endif

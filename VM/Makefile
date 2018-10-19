@@ -12,7 +12,7 @@
 
 NAME = vm
 
-SRC_FILES = vm_get_champ.c main.c  op.c
+SRC_FILES = vm_get_champ.c main.c  op.c visual.c
 
 SRC_DIR = src/
 SRC = $(addprefix $(SRC_DIR), $(SRC_FILES))
@@ -34,8 +34,8 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	@make -C $(LIB_DIR)
-	@gcc $(OBJ) -o $(NAME) -I $(HEADER) -L $(LIB_DIR) -lft
-	@echo "$(BLUE) ***		$(NAME) compiled		***$(RESET_COLOR)"
+	@gcc -lncurses $(OBJ) -o $(NAME) -I $(HEADER) -L $(LIB_DIR) -lft
+	@echo "$(BLUE)***		$(NAME) compiled		***$(RESET_COLOR)"
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 	@mkdir -p $(OBJ_DIR)
