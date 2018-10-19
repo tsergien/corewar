@@ -27,7 +27,7 @@ LIB_DIR = ../libft/
 WWW = -Wall -Wextra -Werror
 
 RED = \x1b[38;5;196m
-BLUE = \x1b[38;5;75m
+BLUE = \x1b[38;5;117m
 RESET_COLOR = \033[0m
 
 all: $(NAME)
