@@ -14,18 +14,19 @@
 #include "../../libft/libft.h"
 #include <fcntl.h>
 
-t_champ		*get(char *file)
+header_t		*get(int fd)
 {
-    t_champ			*tanya;
-    int				fd;
-    unsigned char	buf[4];
+	header_t		*tanya;
+	int				fd;
+	unsigned char	buf[4];
 
-    tanya = (t_champ *)malloc(sizeof(t_champ));
+	tanya = (header_t *)malloc(sizeof(header_t));
 	fd = open(file, O_RDONLY);
 	read(fd, buf, 4);
-	if (ft_strcmp(buf, ))
-	while (read(fd, buf, 4))
-	{
+	// if (ft_strcmp(buf, ))
+	// while (read(fd, buf, 4))
+	// {
 
-	}
+	// }
+	return tanya;
 }

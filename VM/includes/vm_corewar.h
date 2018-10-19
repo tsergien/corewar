@@ -12,14 +12,9 @@
 
 #ifndef VM_COREWAR_H
 #define VM_COREWAR_H
-
+#include "../../libft/libft.h"
 #include "op.h"
 
-typedef struct		s_champ
-{
-	char			*name;
-	int				size;
-	char			*exec;
-}					t_champ;
+
 
 #endif
