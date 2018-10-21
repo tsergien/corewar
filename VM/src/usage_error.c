@@ -1,26 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vm_corewar.h                                       :+:      :+:    :+:   */
+/*   usage_error.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tsergien <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/10/18 15:36:45 by tsergien          #+#    #+#             */
-/*   Updated: 2018/10/18 15:39:36 by tsergien         ###   ########.fr       */
+/*   Created: 2018/10/21 14:52:10 by tsergien          #+#    #+#             */
+/*   Updated: 2018/10/21 14:54:19 by tsergien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef VM_COREWAR_H
-# define VM_COREWAR_H
-# include "../../libft/libft.h"
-# include "op.h"
-# include <ncurses.h>
+#include "../includes/vm_corewar.h"
 
-void			ft_error(char *str);
-void			get_champ(t_game *g, int fd, int ind);
-void			show_field(t_game *g);
-void			ft_error(char *str);
-void			usage(void);
-void			print_panel(t_game *g, WINDOW *win);
+void		ft_error(char *str)
+{
+	write(2, str, ft_strlen(str) + 1);
+	exit(0);
+}
 
-#endif
+void		usage(void)
+{
+	ft_printf("usage: [-v] [-dump nbr_cycles] [-n player_number]\
+	./corewar player1.cor [player2.cor]\
+	[player3.cor] [player4.cor]\n");
+	exit(0);
+}

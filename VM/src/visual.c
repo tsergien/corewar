@@ -13,16 +13,36 @@
 #include "../includes/vm_corewar.h"
 #include <time.h>
 
-void		controller(char c)
+static void		controller(char c, t_game *g)
 {
 	if (c == 27)
 	{
 		endwin();
 		exit(0);
 	}
+	else if (c == 32)
+		g->pause = !g->pause;
+	else if (c == 113 && g->cycles_limit > 1)
+	{
+		if (g->cycles_limit - 10 < 1)
+			g->cycles_limit = 1;
+		else
+			g->cycles_limit -= 10;
+	}
+	else if (c == 114 && g->cycles_limit < 1000)
+	{
+		if (g->cycles_limit + 10 > 1000)
+			g->cycles_limit = 1000;
+		else
+			g->cycles_limit += 10;
+	}
+	else if (c == 119 && g->cycles_limit > 1)
+		g->cycles_limit--;
+	else if (c == 101 && g->cycles_limit < 1000)
+		g->cycles_limit += 1;
 }
 
-void		print_map(t_game *g, WINDOW *win)
+static void		print_map(t_game *g, WINDOW *win)
 {
 	int i;
 
@@ -35,28 +55,49 @@ void		print_map(t_game *g, WINDOW *win)
 	while (++i < MEM_SIZE)
 	{
 		if (!g->map[i].champ)
-		{
-			wattron(win, A_BOLD);
-			wattron(win, COLOR_PAIR(7));
-		}
+			wattron(win, A_BOLD | COLOR_PAIR(7));
 		else
 			wattron(win, COLOR_PAIR(g->map[i].champ));
 		mvwprintw(win, i / 64 + 2, 3 * (i % 64) + 3, "%02x", g->map[i].byte);
 		if (!g->map[i].champ)
-		{
-			wattroff(win, A_BOLD);
-			wattroff(win, COLOR_PAIR(7));
-		}
-		wattroff(win, COLOR_PAIR(g->map[i].champ));
+			wattroff(win, A_BOLD | COLOR_PAIR(7));
+		else
+			wattroff(win, COLOR_PAIR(g->map[i].champ));
 	}
 }
 
-void		show_field(t_game *g)
+static void		do_while(WINDOW *win1, WINDOW *win2, t_game *g)
 {
-	WINDOW	*win1 = NULL;
-	WINDOW	*win2 = NULL;
+	clock_t	prev;
 
-	(void)g;
+	prev = 0;
+	while (1)
+	{
+		while (clock() - prev <= 100000 / (unsigned long)g->cycles_limit)
+			continue ;
+		prev = clock();
+		nodelay(win2, true);
+		wattron(win1, COLOR_PAIR(5));
+		wattron(win2, COLOR_PAIR(5));
+		wborder(win1, 42, 42, 42, 42, 42, 42, 42, 42);
+		wborder(win2, 42, 42, 42, 42, 42, 42, 42, 42);
+		refresh();
+		wrefresh(win1);
+		wrefresh(win2);
+		wattroff(win1, COLOR_PAIR(5));
+		wattroff(win2, COLOR_PAIR(5));
+		print_map(g, win1);
+		print_panel(g, win2);
+		controller(wgetch(win2), g);
+	}
+}
+
+void			show_field(t_game *g)
+{
+	WINDOW	*win1;
+	WINDOW	*win2;
+
+	g->processes = g->champs_num;
 	initscr();
 	noecho();
 	curs_set(0);
@@ -64,27 +105,8 @@ void		show_field(t_game *g)
 	win2 = newwin(68, 58, 0, 196);
 	keypad(win1, TRUE);
 	keypad(win2, TRUE);
-	mouseinterval(0);
-	use_default_colors();
 	start_color();
 	init_color(COLOR_MAGENTA, 410, 410, 410);
 	init_pair(5, COLOR_MAGENTA, COLOR_MAGENTA);
-	while (1)
-	{
-		usleep(290000);
-		nodelay(win1, true);
-		wattron(win1, COLOR_PAIR(5));
-		wattron(win2, COLOR_PAIR(5));
-		wborder(win1, 42, 42, 42, 42, 42, 42, 42, 42);
-		wborder(win2, 42, 42, 42, 42, 42, 42, 42, 42);
-		
-		refresh();
-		wrefresh(win1);
-		wrefresh(win2);
-		wattroff(win1, COLOR_PAIR(5));
-		wattroff(win2, COLOR_PAIR(5));
-		print_map(g, win1); 
-
-		controller(wgetch(win1));
-	}
+	do_while(win1, win2, g);
 }

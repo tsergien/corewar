@@ -13,44 +13,99 @@
 #include <fcntl.h>
 #include "../includes/vm_corewar.h"
 
-void		ft_error(char *str)
+int			count_players(int ac, char **av)
 {
-	write(2, str, ft_strlen(str) + 1);
-	exit(0);
+	int		i;
+	int		players;
+
+	i = 0;
+	players = 0;
+	while (++i < ac)
+	{
+		if (ft_strstr(av[i], ".cor"))
+			players++;
+	}
+	return (players);
 }
 
-static void	usage(void)
+static void	get_player(t_game *g, int *i, char **av)
 {
-	ft_printf("usage: ./corewar player1.cor [player2.cor] \
-[player3.cor] [player4.cor]\n");
-	exit(0);
+	unsigned char	n;
+
+	n = ft_atoi(av[++(*i)]) - 1;
+	(n < 0 || n > 3) ? ft_error("Invalid index\n") : 0;
+	g->champ[n].filled ? ft_error("Player is already assigned!\n") : 0;
+	g->flags.n++;
+	get_champ(g, open(av[*i], O_RDONLY), n);
+}
+
+static void	get_flags(t_game *g, int ac, char **av)
+{
+	int				i;
+	int				ind;
+
+	i = 0;
+	ind = 0;
+	while (++i < ac)
+	{
+		if (!ft_strcmp(av[i], "-v"))
+			g->flags.v = 1;
+		else if (!ft_strcmp(av[i], "-dump"))
+			g->flags.nbr_cycles = ft_atoi(av[++i]);
+		else if (!ft_strcmp(av[i], "-n"))
+			get_player(g, &i, av);
+		else
+		{
+			while (ind < 4 && g->champ[ind].filled)
+				++ind;
+			get_champ(g, open(av[i], O_RDONLY), ind);
+			g->flags.n++;
+		}
+	}
+	if (g->flags.n != g->champs_num)
+		ft_error("Invalid players order\n");
+}
+
+static void	init(t_game *g, int ac, char **av)
+{
+	int		i;
+
+	g->champs_num = 0;
+	g->pause = 1;
+	g->cycles_limit = 50;
+	g->cycle = 0;
+	g->champs_num = count_players(ac, av);
+	g->flags.n = 0;
+	g->flags.v = 0;
+	g->flags.nbr_cycles = 0;
+	if (g->champs_num < 1 || g->champs_num > 4)
+		usage();
+	i = -1;
+	while (++i < 4)
+		g->champ[i].filled = 0;
+	i = -1;
+	while (++i < MEM_SIZE)
+		g->map[i].champ = 0;
+	get_flags(g, ac, av);
 }
 
 int			main(int argc, char **argv)
 {
-	int			i;
-	int			fd;
 	t_game		*g;
+	int			i;
 
-	if (argc < 2 || argc > 5)
-		usage();
 	g = (t_game *)malloc(sizeof(t_game));
-	g->champs_num = 0;
-	ft_printf("champs_num: %d\n", g->champs_num);
-	i = 0;
-	for (int i = 0; i < MEM_SIZE; i++)
+	init(g, argc, argv);
+	i = -1;
+	if (g->flags.v)
+		show_field(g);
+	else
 	{
-		g->map[i].champ = 0;
+		ft_printf("Introducing contestants...\n");
+		while (++i < g->champs_num)
+			ft_printf("* Player %d, weighing %d bytes, \"%s\" (\"%s\") !)\n",
+		i + 1, g->champ[i].prog_size, g->champ[i].prog_name,
+		g->champ[i].comment);
 	}
-	g->champs_num = argc - 1;
-	while (++i < argc)
-	{
-		fd = open(argv[i], O_RDONLY);
-		get_champ(g, fd, i - 1);
-		ft_printf("%s\n", g->champ[i - 1].comment);
-		ft_printf("%s\n", g->champ[i - 1].prog_name);
-		ft_printf("%u\n", g->champ[i - 1].prog_size);
-	}
-	show_field(g);
 	return (0);
 }

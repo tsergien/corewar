@@ -37,8 +37,7 @@ static void			get_exec(t_game *g, int fd, int ind)
 
 	j = -1;
 	i = ind * (MEM_SIZE / g->champs_num);
-	ft_printf("i: %d\n", g->champs_num);
-	while (++j <= g->champ[g->champs_num].prog_size)
+	while (++j <= g->champ[ind].prog_size)
 	{
 		read(fd, &temp, 1);
 		g->map[i + j].byte = temp;
@@ -70,21 +69,24 @@ void				get_champ(t_game *g, int fd, int ind)
 	unsigned char	*str;
 	unsigned int	temp;
 
-	g->champ[g->champs_num].magic = rev(fd);
-	if (g->champ[g->champs_num].magic != COREWAR_EXEC_MAGIC)
+	(g->champ[ind].filled) ? ft_error("Tut uzhe est' Tanya!\n") : 0;
+	g->champ[ind].filled = 1;
+	if (rev(fd) != COREWAR_EXEC_MAGIC)
 		ft_error("No magic header!\n");
-	ft_strclr(g->champ[g->champs_num].prog_name);
+	ft_strclr(g->champ[ind].prog_name);
+	g->champ[ind].current_lives = 0;
+	g->champ[ind].last_live = 0;
 	i = 0;
 	while (i + 4 <= PROG_NAME_LENGTH)
 	{
 		read(fd, &temp, 4);
 		str = (unsigned char *)&temp;
-		ft_strncpy(g->champ[g->champs_num].prog_name + i, (const char *)str, 4);
+		ft_strncpy(g->champ[ind].prog_name + i, (const char *)str, 4);
 		i += 4;
 	}
 	read(fd, &temp, 4);
-	g->champ[g->champs_num].prog_size = rev(fd);
-	if (g->champ[g->champs_num].prog_size > CHAMP_MAX_SIZE)
+	g->champ[ind].prog_size = rev(fd);
+	if (g->champ[ind].prog_size > CHAMP_MAX_SIZE)
 		ft_error("Too big exec\n");
 	get_comment(g, fd, ind);
 	get_exec(g, fd, ind);
