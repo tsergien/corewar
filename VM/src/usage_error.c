@@ -21,7 +21,6 @@ void		ft_error(char *str)
 void		usage(void)
 {
 	ft_printf("usage: [-v] [-dump nbr_cycles] [-n player_number]\
-	./corewar player1.cor [player2.cor]\
-	[player3.cor] [player4.cor]\n");
+	./corewar <player1.cor> <...>\n");
 	exit(0);
 }

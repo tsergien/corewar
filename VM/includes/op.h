@@ -12,7 +12,14 @@
 
 #ifndef OP_H
 # define OP_H
-
+/*
+** Все размеры указаны в байтах.
+** Предполагается, что int 32 бита. Это правда дома?
+*/
+/*
+** Toutes les tailles sont en octets.
+** On part du principe qu'un int fait 32 bits. Est-ce vrai chez vous ?
+*/
 # define IND_SIZE				2
 # define REG_SIZE				4
 # define DIR_SIZE				REG_SIZE
@@ -32,9 +39,9 @@
 # define DIRECT_CHAR				'%'
 # define SEPARATOR_CHAR			','
 
-# define LABEL_CHARS				"abcdefghijklmnopqrstuvwxyz_0123456789"
+# define LABEL_CHARS			"abcdefghijklmnopqrstuvwxyz_0123456789"
 
-# define NAME_CMD_STRING			".name"
+# define NAME_CMD_STRING		".name"
 # define COMMENT_CMD_STRING		".comment"
 
 # define REG_NUMBER				16
@@ -44,7 +51,7 @@
 # define NBR_LIVE				21
 # define MAX_CHECKS				10
 
-typedef char	t_arg_type;
+typedef char		t_arg_type;
 
 # define T_REG					1
 # define T_DIR					2
@@ -65,6 +72,18 @@ typedef struct		s_header
 	unsigned int	current_lives;
 }					t_header;
 
+typedef struct		s_cursor
+{
+	unsigned int	index;
+	char			carry;
+	char			parent_ind;
+	unsigned int	registr[16];
+	char			alive;
+	char			command;
+	unsigned int	cycles_to_exec;
+	struct s_cursor	*next;
+}					t_cursor;
+
 typedef struct		s_op
 {
 	char			*name;
@@ -83,23 +102,26 @@ typedef struct		s_field
 	unsigned char	champ;
 }					t_field;
 
-typedef struct		s_flags
+typedef struct		s_flags////////added
 {
 	char			v;
 	char			n;
 	int				nbr_cycles;
 }					t_flags;
 
-typedef struct		s_game
+typedef struct		s_game////////added
 {
 	t_field			map[MEM_SIZE];
 	unsigned char	champs_num;
 	t_header		champ[4];
 	unsigned char	pause;
-	int				cycles_limit;
+	unsigned int	cycles_limit;
 	unsigned long	processes;
 	unsigned int	cycle;
 	t_flags			flags;
+	unsigned int	cycles_to_die;
 }					t_game;
+
+t_op				g_op_tab[17];
 
 #endif

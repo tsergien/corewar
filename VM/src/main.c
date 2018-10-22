@@ -30,13 +30,13 @@ int			count_players(int ac, char **av)
 
 static void	get_player(t_game *g, int *i, char **av)
 {
-	unsigned char	n;
+	int	n;
 
 	n = ft_atoi(av[++(*i)]) - 1;
-	(n < 0 || n > 3) ? ft_error("Invalid index\n") : 0;
+	(n < 0 || n > g->champs_num - 1) ? ft_error("Invalid index\n") : 0;
 	g->champ[n].filled ? ft_error("Player is already assigned!\n") : 0;
 	g->flags.n++;
-	get_champ(g, open(av[*i], O_RDONLY), n);
+	get_champ(g, open(av[++(*i)], O_RDONLY), n);
 }
 
 static void	get_flags(t_game *g, int ac, char **av)
@@ -78,6 +78,7 @@ static void	init(t_game *g, int ac, char **av)
 	g->flags.n = 0;
 	g->flags.v = 0;
 	g->flags.nbr_cycles = 0;
+	g->cycles_to_die = CYCLE_TO_DIE;
 	if (g->champs_num < 1 || g->champs_num > 4)
 		usage();
 	i = -1;
@@ -106,6 +107,7 @@ int			main(int argc, char **argv)
 			ft_printf("* Player %d, weighing %d bytes, \"%s\" (\"%s\") !)\n",
 		i + 1, g->champ[i].prog_size, g->champ[i].prog_name,
 		g->champ[i].comment);
+		start_game(g);
 	}
 	return (0);
 }

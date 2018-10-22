@@ -22,5 +22,6 @@ void			show_field(t_game *g);
 void			ft_error(char *str);
 void			usage(void);
 void			print_panel(t_game *g, WINDOW *win);
+void			start_game(t_game *g);
 
 #endif

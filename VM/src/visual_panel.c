@@ -29,7 +29,7 @@ static void		print_static_strs(WINDOW *win, int pos, t_game *g)
 	mvwprintw(win, pos + 4, 3,
 	"[--------------------------------------------------]");
 	wattroff(win, COLOR_PAIR(7));
-	mvwprintw(win, pos + 6, 3, "CYCLE_TO_DIE : %d", CYCLE_TO_DIE);
+	mvwprintw(win, pos + 6, 3, "CYCLE_TO_DIE : %d", g->cycles_to_die);
 	mvwprintw(win, pos + 8, 3, "CYCLE_DELTA : %d", CYCLE_DELTA);
 	mvwprintw(win, pos + 10, 3, "NBR_LIVE : %d", NBR_LIVE);
 	mvwprintw(win, pos + 12, 3, "MAX_CHECKS : %d", MAX_CHECKS);
