@@ -20,9 +20,13 @@
 ** Toutes les tailles sont en octets.
 ** On part du principe qu'un int fait 32 bits. Est-ce vrai chez vous ?
 */
+// # define IND_SIZE				2
+// # define REG_SIZE				4
+// # define DIR_SIZE				REG_SIZE
 # define IND_SIZE				2
-# define REG_SIZE				4
-# define DIR_SIZE				REG_SIZE
+# define REG_SIZE				1
+# define DIR_SIZE4				4
+# define DIR_SIZE2				2
 
 # define REG_CODE				1
 # define DIR_CODE				2
@@ -47,7 +51,7 @@
 # define REG_NUMBER				16
 
 # define CYCLE_TO_DIE			1536
-# define CYCLE_DELTA				50
+# define CYCLE_DELTA			50
 # define NBR_LIVE				21
 # define MAX_CHECKS				10
 
@@ -62,7 +66,7 @@ typedef char		t_arg_type;
 # define COMMENT_LENGTH			(2048)
 # define COREWAR_EXEC_MAGIC		0xea83f3
 
-typedef struct		s_header
+typedef struct		s_champ
 {
 	unsigned char	filled;
 	char			prog_name[PROG_NAME_LENGTH + 1];
@@ -70,14 +74,15 @@ typedef struct		s_header
 	char			comment[COMMENT_LENGTH + 1];
 	unsigned int	last_live;
 	unsigned int	current_lives;
-}					t_header;
+	unsigned long	processes;
+}					t_champ;
 
 typedef struct		s_cursor
 {
 	unsigned int	index;
 	char			carry;
 	char			parent_ind;
-	unsigned int	registr[16];
+	unsigned int	registr[REG_NUMBER];
 	char			alive;
 	char			command;
 	unsigned int	cycles_to_exec;
@@ -91,7 +96,7 @@ typedef struct		s_op
 	int				args[3];
 	char			opcode;
 	int				cycles;
-	char			*description;
+	char			label;
 	char			codage_octal;
 	char			carry;
 }					t_op;
@@ -113,13 +118,13 @@ typedef struct		s_game////////added
 {
 	t_field			map[MEM_SIZE];
 	unsigned char	champs_num;
-	t_header		champ[4];
+	t_champ			champ[4];
 	unsigned char	pause;
 	unsigned int	cycles_limit;
-	unsigned long	processes;
 	unsigned int	cycle;
 	t_flags			flags;
 	unsigned int	cycles_to_die;
+	t_cursor		*cursor;
 }					t_game;
 
 t_op				g_op_tab[17];
