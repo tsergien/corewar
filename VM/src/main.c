@@ -70,23 +70,16 @@ static void	init(t_game *g, int ac, char **av)
 {
 	int		i;
 
-	g->champs_num = 0;
+	i = -1;
+	ft_bzero(g, sizeof(t_game));
+	g->champs_num = count_players(ac, av);
 	g->pause = 1;
 	g->cycles_limit = 50;
-	g->cycle = 0;
-	g->champs_num = count_players(ac, av);
-	g->flags.n = 0;
-	g->flags.v = 0;
-	g->flags.nbr_cycles = 0;
 	g->cycles_to_die = CYCLE_TO_DIE;
 	if (g->champs_num < 1 || g->champs_num > 4)
 		usage();
-	i = -1;
-	while (++i < 4)
-		g->champ[i].filled = 0;
-	i = -1;
-	while (++i < MEM_SIZE)
-		g->map[i].champ = 0;
+	while (++i < g->champs_num)
+		add_cursor(i, g);
 	get_flags(g, ac, av);
 }
 
@@ -107,7 +100,11 @@ int			main(int argc, char **argv)
 			ft_printf("* Player %d, weighing %d bytes, \"%s\" (\"%s\") !)\n",
 		i + 1, g->champ[i].prog_size, g->champ[i].prog_name,
 		g->champ[i].comment);
-		start_game(g);
+		// play
+		// For each valid execution of the live instruction, the machine must display:
+		// “A process shows that player X (champion_name) is alive”.
+		// “Player 2 (rainbowdash) won”.
+
 	}
 	return (0);
 }

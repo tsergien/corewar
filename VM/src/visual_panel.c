@@ -12,6 +12,18 @@
 
 #include "../includes/vm_corewar.h"
 
+unsigned long	processes_sum(t_game *g)
+{
+	int				i;
+	unsigned long	res;
+
+	res = 0;
+	i = -1;
+	while (++i < g->champs_num)
+		res += g->champ[i].processes;
+	return (res);
+}
+
 static void		print_static_strs(WINDOW *win, int pos, t_game *g)
 {
 	mvwprintw(win, 2, 3, "             ");
@@ -20,7 +32,7 @@ static void		print_static_strs(WINDOW *win, int pos, t_game *g)
 	mvwprintw(win, 4, 25, "    ");
 	mvwprintw(win, 4, 3, "Cycles/second limit : %d", g->cycles_limit);
 	mvwprintw(win, 7, 3, "Cycle : %d", g->cycle);
-	mvwprintw(win, 9, 3, "Processes : %d", g->processes);
+	mvwprintw(win, 9, 3, "Processes : %d", processes_sum(g));
 	mvwprintw(win, pos, 3, "Live breakdown for current period :");
 	mvwprintw(win, pos + 3, 3, "Live breakdown for last period :");
 	wattron(win, COLOR_PAIR(7));

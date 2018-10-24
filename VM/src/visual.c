@@ -68,10 +68,11 @@ static void		print_map(t_game *g, WINDOW *win)
 
 static void		do_while(WINDOW *win1, WINDOW *win2, t_game *g)
 {
-	clock_t	prev;
+	clock_t		prev;
+	t_cursor	*tmp;
 
 	prev = 0;
-	while (1)
+	while (is_alives(g->cursor) && g->cycles_to_die > 0)
 	{
 		while (clock() - prev <= 100000 / (unsigned long)g->cycles_limit)
 			continue ;
@@ -89,6 +90,8 @@ static void		do_while(WINDOW *win1, WINDOW *win2, t_game *g)
 		print_map(g, win1);
 		print_panel(g, win2);
 		controller(wgetch(win2), g);
+		if (!g->pause)
+			g->cycle++;
 	}
 }
 
@@ -97,7 +100,6 @@ void			show_field(t_game *g)
 	WINDOW	*win1;
 	WINDOW	*win2;
 
-	g->processes = g->champs_num;
 	initscr();
 	noecho();
 	curs_set(0);

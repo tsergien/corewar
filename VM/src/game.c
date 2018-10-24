@@ -12,38 +12,35 @@
 
 #include "../includes/vm_corewar.h"
 
-void		add_cursor(t_cursor *head, int pos, int champ_ind, t_game *g)
+void		add_cursor(int champ_ind, t_game *g)
 {
-	t_cursor *temp;
+	t_cursor	*temp;
+	int			pos;
 
-	if (!head)
+	pos = champ_ind * (MEM_SIZE / g->champs_num);
+	if (!g->cursor)
 	{
-		head = (t_cursor *)malloc(sizeof(t_cursor));
-		temp = head;
+		g->cursor = (t_cursor *)malloc(sizeof(t_cursor));
+		temp = g->cursor;
 	}
 	else
 	{
-		temp = head;
+		temp = g->cursor;
 		while (temp && temp->next)
 			temp = temp->next;
 		temp->next = (t_cursor *)malloc(sizeof(t_cursor));
 		temp = temp->next;
 	}
-	temp->next = NULL;
+	ft_bzero(temp, sizeof(t_cursor));
 	temp->index = pos;
 	temp->alive = 1;
 	temp->parent_ind = champ_ind;
-	temp->carry = 0;
 	temp->command = g->map[pos].byte;
 	temp->cycles_to_exec = g_op_tab[g->map[pos].byte - 1].cycles;
-	ft_bzero(temp->registr, sizeof(temp->registr));
 }
 
-static char	is_alives(t_cursor *c)
+char		is_alives(t_cursor *c)
 {
-	t_cursor	*tmp;
-
-	tmp = c;
 	while (c)
 	{
 		if (c->alive)
@@ -53,17 +50,40 @@ static char	is_alives(t_cursor *c)
 	return (0);
 }
 
-void		start_game(t_game *g)
+void		exec_comm(t_cursor *c, t_game *g)
 {
-	t_cursor	*cursor;
-	int			i;
+	void		(*f[16])(t_game *g, t_cursor *c);
 
-	i = -1;
-	cursor = NULL;
-	while (++i < g->champs_num)
-		add_cursor(cursor, i * (MEM_SIZE / g->champs_num), i, g);
-	while (is_alives(cursor) && g->cycles_to_die > 0)
+	f[0] = &live;
+	f[1] = &ld;
+	f[2] = &st;
+	f[3] = &add;
+	f[4] = &sub;
+	f[5] = &and;
+	f[6] = &or;
+	f[7] = &xor;
+	f[8] = &zjmp;
+	f[9] = &ldi;
+	f[10] = &sti;
+	f[11] = &fork;
+	f[12] = &lld;
+	f[13] = &lldi;
+	f[14] = &lfork;
+	f[15] = &aff;
+	if (c->cycles_to_exec == 0)
+		f[c->command - 1](g, c);
+	else
+		c->cycles_to_exec--; 
+}
+
+void		do_step(t_game *g)
+{
+	t_cursor	*tmp;
+
+	tmp = g->cursor;
+	while (tmp && ! g->pause)
 	{
-		//do stuff
+		exec_comm(tmp, g);
+		tmp = tmp->next;
 	}
 }

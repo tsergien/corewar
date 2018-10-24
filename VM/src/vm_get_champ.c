@@ -53,6 +53,7 @@ static void			get_comment(t_game *g, int fd, int ind)
 
 	i = 0;
 	ft_strclr(g->champ[ind].comment);
+	g->champ[ind].processes = 1;
 	while (i + 4 <= COMMENT_LENGTH)
 	{
 		read(fd, &temp, 4);
