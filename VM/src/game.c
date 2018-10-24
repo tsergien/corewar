@@ -52,16 +52,16 @@ char		is_alives(t_cursor *c)
 
 void		exec_comm(t_cursor *c, t_game *g)
 {
-	void		(*f[16])(t_game *g, t_cursor *c);
+	int		(*f[16])(t_game *g, t_cursor *c);
 
 	f[0] = &live;
 	f[1] = &ld;
 	f[2] = &st;
 	f[3] = &add;
 	f[4] = &sub;
-	f[5] = &and;
-	f[6] = &or;
-	f[7] = &xor;
+	f[5] = &and_;
+	f[6] = &or_;
+	f[7] = &xor_;
 	f[8] = &zjmp;
 	f[9] = &ldi;
 	f[10] = &sti;
@@ -71,7 +71,7 @@ void		exec_comm(t_cursor *c, t_game *g)
 	f[14] = &lfork;
 	f[15] = &aff;
 	if (c->cycles_to_exec == 0)
-		f[c->command - 1](g, c);
+		c->index = (f[c->command - 1](g, c) + c->index) % MEM_SIZE;
 	else
 		c->cycles_to_exec--; 
 }

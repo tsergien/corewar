@@ -27,21 +27,23 @@ void			add_cursor(int champ_ind, t_game *g);
 void			to_map(t_field *map, void *src, size_t size, unsigned ind);
 void			from_map(void *dst, t_field *map, size_t size, unsigned ind);
 
+char			*get_codage(unsigned int codage);
+int				get_args(t_field *map, t_cursor *c, unsigned int *args, int args_num);
 
 /*
 ** FUNCTIONS
 */
-void			live(t_game *g, t_cursor *c);
-void			ld(t_game *g, t_cursor *c);
-void			st(t_game *g, t_cursor *c);
-void			add(t_game *g, t_cursor *c);
-void			sub(t_game *g, t_cursor *c);
-void			and_(t_game *g, t_cursor *c);
-void			or_(t_game *g, t_cursor *c);
-void			xor_(t_game *g, t_cursor *c);
-void			zjmp(t_game *g, t_cursor *c);
-void			ldi(t_game *g, t_cursor *c);
-void			sti(t_game *g, t_cursor *c);
+int				live(t_game *g, t_cursor *c);
+int				ld(t_game *g, t_cursor *c);
+int				st(t_game *g, t_cursor *c);
+int				add(t_game *g, t_cursor *c);
+int				sub(t_game *g, t_cursor *c);
+int				and_(t_game *g, t_cursor *c);
+int				or_(t_game *g, t_cursor *c);
+int				xor_(t_game *g, t_cursor *c);
+int				zjmp(t_game *g, t_cursor *c);
+int				ldi(t_game *g, t_cursor *c);
+int				sti(t_game *g, t_cursor *c);
 
 
 

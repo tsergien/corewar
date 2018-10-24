@@ -30,11 +30,11 @@ void		from_map(void *dst, t_field *map, size_t size, unsigned ind)
 
 	i = -1;
 	csrc = (unsigned char *)dst;
-	while (++i < size && i < MEM_SIZE)
-		csrc[i] = map[ind + i].byte;
+	while (++i < size)
+		csrc[i] = map[(ind + i) % MEM_SIZE].byte;
 }
 
-void		live(t_game *g, t_cursor *c)
+int			live(t_game *g, t_cursor *c)
 {
 	char	name;
 	int		i;
@@ -51,45 +51,48 @@ void		live(t_game *g, t_cursor *c)
 			g->champ[i].current_lives += 1;
 			g->champ[i].last_live = g->cycle;
 		}
+	return (5);
 }
 
-void		ld(t_game *g, t_cursor *c)
+int			ld(t_game *g, t_cursor *c)
 {
-	unsigned char	num;
-	unsigned int	t_arg;
-	unsigned char	t_reg;
+	unsigned int	*args;
+	char			*cod;
+	int				offset;
 
-	num = g->map[c->index + 1].byte;
-	t_reg = g->map[c->index + 6].byte;
-	from_map(&t_arg, g->map, 4, c->index + 2);
-	if (num == 208)//T_IND
+	cod = get_codage(g->map[c->index + 1].byte & 252);
+	offset = get_args(g->map, c, args, 2);//takes 3 arguments
+	if (cod[1] == REG_CODE && (cod[0] == DIR_CODE || cod[0] == IND_CODE))
 	{
-		to_map(g->map, &t_arg, 4, c->index + 2);
-		t_arg = t_arg % IDX_MOD;
-		from_map(c->registr + t_reg, g->map, 4, c->index + t_arg);
-
+		if (cod[0] == IND_CODE)
+		{
+			args[0] = args[0] % IDX_MOD;
+			from_map(c->registr + args[1], g->map, 4, c->index + args[0]);
+		}
+		else if (cod[0] == DIR_CODE)
+			c->registr[args[1]] = args[0];
 	}
-	else if (num == 144)//T_DIR
-		ft_memcpy(c->registr + t_reg, &t_arg, 4);
-	c->carry = (!t_arg) ? 1 : 0;
+	c->carry = (c->registr[args[1]] == 0) ? 1 : 0;
+	return (offset + 2);
 }
 
-void		st(t_game *g, t_cursor *c)
+int			st(t_game *g, t_cursor *c)
 {
-	unsigned char	num;
-	unsigned char	t_reg;
-	unsigned int	arg2;
+	unsigned int	*args;
+	char			*cod;
+	int				offset;
 
-	num = g->map[c->index + 1].byte;
-	t_reg = g->map[c->index + 2].byte;
-	if (num == 80)
+	cod = get_codage(g->map[c->index + 1].byte & 252);
+	offset = get_args(g->map, c, args, 2);
+	if (cod[1] == REG_CODE)
 	{
-		arg2 = g->map[c->index + 3].byte;
-		c->registr[arg2] = t_reg;
+		args[1]= g->map[c->index + 3].byte;
+		c->registr[args[1]] = args[0];
 	}
-	else if (num == 112)
+	else if (cod[1] == IND_CODE)
 	{
-		arg2 %= IDX_MOD;
-		g->map[c->index +arg2].byte = t_reg;
+		args[1] %= IDX_MOD;
+		g->map[c->index + args[1]].byte = args[0];
 	}
+	return (offset + 2);
 }

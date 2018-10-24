@@ -12,20 +12,57 @@
 
 #include "../includes/vm_corewar.h"
 
-void		add(t_game *g, t_cursor *c)
+int			add(t_game *g, t_cursor *c)
 {
-	c->registr[g->map[c->index + 3].byte] = g->map[c->index + 1].byte + g->map[c->index + 2].byte;
-	if (!g->map[c->index + 3].byte)
-		c->carry = 1;
-	else
-		c->carry = 0;
+	unsigned int	*args;
+	char			*cod;
+	int				offset;
+
+	cod = get_codage(g->map[c->index + 1].byte);
+	args = (unsigned int *)malloc(sizeof(unsigned int) * 3);
+	offset = get_args(g->map, c, args, 3);
+	if (cod[0] == REG_CODE && cod[1] == REG_CODE && cod[2] == REG_CODE)
+	{
+		c->registr[args[2]] = c->registr[args[0]] + c->registr[args[1]];
+		c->carry = (!g->map[c->index + 3].byte) ? 1 : 0;
+	}
+	return (offset + 2);
 }
 
-void		sub(t_game *g, t_cursor *c)
+int			sub(t_game *g, t_cursor *c)
 {
-	c->registr[g->map[c->index + 3].byte] = g->map[c->index + 1].byte - g->map[c->index + 2].byte;
-	if (!g->map[c->index + 3].byte)
-		c->carry = 1;
-	else
-		c->carry = 0;
+	unsigned int	*args;
+	char			*cod;
+	int				offset;
+
+	cod = get_codage(g->map[c->index + 1].byte);
+	args = (unsigned int *)malloc(sizeof(unsigned int) * 3);
+	offset = get_args(g->map, c, args, 3);
+	if (cod[0] == REG_CODE && cod[1] == REG_CODE && cod[2] == REG_CODE)
+	{
+		c->registr[args[2]] = c->registr[args[0]] - c->registr[args[1]];
+		c->carry = (!g->map[c->index + 3].byte) ? 1 : 0;
+	}
+	return (offset + 2);
+}
+
+int			zjmp(t_game *g, t_cursor *c)
+{
+	short int		t_dir;
+
+	if (c->carry)
+	{
+		from_map(&t_dir, g->map, 2, c->index + 1);
+		c->index = t_dir % IDX_MOD;
+	} 
+}
+
+int			ldi(t_game *g, t_cursor *c)
+{
+
+}
+
+int			sti(t_game *g, t_cursor *c)
+{
+
 }
