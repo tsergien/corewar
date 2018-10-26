@@ -20,18 +20,18 @@ void		to_map(t_field *map, void *src, size_t size, unsigned ind)
 	i = -1;
 	csrc = (unsigned char *)src;
 	while (++i < size)
-		map[(ind + i) % MEM_SIZE].byte = csrc[i];
+		map[(ind + i) % MEM_SIZE].byte = csrc[size - 1 - i];
 }
 
 void		from_map(void *dst, t_field *map, size_t size, unsigned ind)
 {
 	unsigned int	i;
-	unsigned char	*csrc;
+	unsigned char	*cdst;
 
 	i = -1;
-	csrc = (unsigned char *)dst;
+	cdst = (unsigned char *)dst;
 	while (++i < size)
-		csrc[i] = map[(ind + i) % MEM_SIZE].byte;
+		cdst[size - i - 1] = map[(ind + i) % MEM_SIZE].byte;
 }
 
 int			live(t_game *g, t_cursor *c)
@@ -74,7 +74,6 @@ int			ld(t_game *g, t_cursor *c)
 			c->registr[args[1]] = args[0];
 	}
 	c->carry = (c->registr[args[1]] == 0) ? 1 : 0;
-	ft_printf("pidor\n");
 	free(args);
 	free(cod);
 	return (offset + 2);

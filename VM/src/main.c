@@ -102,7 +102,7 @@ int			main(int argc, char **argv)
 		i + 1, g->champ[i].prog_size, g->champ[i].prog_name,
 		g->champ[i].comment);
 		int wh = -1;//del
-		while (is_alives(g->cursor) && g->cycles_to_die > 0 && ++wh < 10)
+		while (is_alives(g->cursor) && g->cycles_to_die > 0 && ++wh < 150)
 		{
 			do_step(g);
 			g->cycle++;

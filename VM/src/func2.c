@@ -54,16 +54,11 @@ int			zjmp(t_game *g, t_cursor *c)
 {
 	short int		t_dir;
 	
-	ft_printf("Start\n");
-	ft_printf("c->carry zjmp %d\n", c->carry);
 	if (c->carry)
 	{
-		ft_printf("Carry\n");
 		from_map(&t_dir, g->map, 2, c->index + 1);
-		ft_printf("shift = %d\n", t_dir % IDX_MOD);
 		c->index += t_dir % IDX_MOD;
 	}
-	ft_printf("Finish\n");
 	return (3);
 }
 

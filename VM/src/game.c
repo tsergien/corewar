@@ -54,16 +54,17 @@ void		exec_comm(t_cursor *c, t_game *g, int (*f)(t_game *g, t_cursor *c))
 {
 	unsigned int		shift;
 
-	ft_printf("________________________\n");
 	if (c->cycles_to_exec == 0)
 	{
+		ft_printf("________________________\n");
+		ft_printf("________________________\n");
 		ft_printf("index before: %d\n", c->index);
 		ft_printf("com: %s\n", g_op_tab[c->command - 1].name);
-		ft_printf("carry: %d\n", c->carry);
 		shift = f(g, c);
 		if (c->command - 1 != 8 || c->carry == 0)
 			c->index = (shift + c->index) % MEM_SIZE;
 		c->command = g->map[c->index].byte;
+		c->cycles_to_exec = g_op_tab[c->command - 1].cycles;
 		ft_printf("index after: %d\n", c->index);
 	}
 	else
@@ -94,7 +95,11 @@ void		do_step(t_game *g)
 	tmp = g->cursor;
 	while (tmp && !g->pause)
 	{
-		ft_printf("tmp->comm = %d\n", tmp->command - 1);
+		while (tmp->command == 1 || tmp->command > 16)
+		{
+			tmp->index = (tmp->index + 1) % MEM_SIZE;
+			tmp->command = g->map[tmp->index].byte;
+		}
 		exec_comm(tmp, g, f[tmp->command - 1]);
 		tmp = tmp->next;
 	}
