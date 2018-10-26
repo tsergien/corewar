@@ -12,7 +12,8 @@
 
 NAME = vm
 
-SRC_FILES = vm_get_champ.c main.c  op.c visual.c visual_panel.c usage_error.c game.c
+SRC_FILES = vm_get_champ.c main.c  op.c visual.c visual_panel.c usage_error.c game.c\
+			func1.c func2.c func3.c func4.c
 
 SRC_DIR = src/
 SRC = $(addprefix $(SRC_DIR), $(SRC_FILES))

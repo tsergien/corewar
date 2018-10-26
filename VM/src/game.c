@@ -50,9 +50,30 @@ char		is_alives(t_cursor *c)
 	return (0);
 }
 
-void		exec_comm(t_cursor *c, t_game *g)
+void		exec_comm(t_cursor *c, t_game *g, int (*f)(t_game *g, t_cursor *c))
 {
-	int		(*f[16])(t_game *g, t_cursor *c);
+	unsigned int		shift;
+
+	ft_printf("________________________\n");
+	if (c->cycles_to_exec == 0)
+	{
+		ft_printf("index before: %d\n", c->index);
+		ft_printf("com: %s\n", g_op_tab[c->command - 1].name);
+		ft_printf("carry: %d\n", c->carry);
+		shift = f(g, c);
+		if (c->command - 1 != 8 || c->carry == 0)
+			c->index = (shift + c->index) % MEM_SIZE;
+		c->command = g->map[c->index].byte;
+		ft_printf("index after: %d\n", c->index);
+	}
+	else
+		c->cycles_to_exec--;
+}
+
+void		do_step(t_game *g)
+{
+	t_cursor	*tmp;
+	int			(*f[16])(t_game *g, t_cursor *c);
 
 	f[0] = &live;
 	f[1] = &ld;
@@ -65,25 +86,16 @@ void		exec_comm(t_cursor *c, t_game *g)
 	f[8] = &zjmp;
 	f[9] = &ldi;
 	f[10] = &sti;
-	f[11] = &fork;
+	f[11] = &fork_;
 	f[12] = &lld;
 	f[13] = &lldi;
 	f[14] = &lfork;
 	f[15] = &aff;
-	if (c->cycles_to_exec == 0)
-		c->index = (f[c->command - 1](g, c) + c->index) % MEM_SIZE;
-	else
-		c->cycles_to_exec--; 
-}
-
-void		do_step(t_game *g)
-{
-	t_cursor	*tmp;
-
 	tmp = g->cursor;
-	while (tmp && ! g->pause)
+	while (tmp && !g->pause)
 	{
-		exec_comm(tmp, g);
+		ft_printf("tmp->comm = %d\n", tmp->command - 1);
+		exec_comm(tmp, g, f[tmp->command - 1]);
 		tmp = tmp->next;
 	}
 }

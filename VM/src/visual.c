@@ -69,7 +69,6 @@ static void		print_map(t_game *g, WINDOW *win)
 static void		do_while(WINDOW *win1, WINDOW *win2, t_game *g)
 {
 	clock_t		prev;
-	t_cursor	*tmp;
 
 	prev = 0;
 	while (is_alives(g->cursor) && g->cycles_to_die > 0)
@@ -87,6 +86,10 @@ static void		do_while(WINDOW *win1, WINDOW *win2, t_game *g)
 		wrefresh(win2);
 		wattroff(win1, COLOR_PAIR(5));
 		wattroff(win2, COLOR_PAIR(5));
+
+		do_step(g);
+	ft_printf("pos = %d\n", g->map[0].byte);
+
 		print_map(g, win1);
 		print_panel(g, win2);
 		controller(wgetch(win2), g);

@@ -78,9 +78,9 @@ static void	init(t_game *g, int ac, char **av)
 	g->cycles_to_die = CYCLE_TO_DIE;
 	if (g->champs_num < 1 || g->champs_num > 4)
 		usage();
+	get_flags(g, ac, av);
 	while (++i < g->champs_num)
 		add_cursor(i, g);
-	get_flags(g, ac, av);
 }
 
 int			main(int argc, char **argv)
@@ -95,12 +95,18 @@ int			main(int argc, char **argv)
 		show_field(g);
 	else
 	{
+		g->pause = 0;
 		ft_printf("Introducing contestants...\n");
 		while (++i < g->champs_num)
 			ft_printf("* Player %d, weighing %d bytes, \"%s\" (\"%s\") !)\n",
 		i + 1, g->champ[i].prog_size, g->champ[i].prog_name,
 		g->champ[i].comment);
-		// play
+		int wh = -1;//del
+		while (is_alives(g->cursor) && g->cycles_to_die > 0 && ++wh < 10)
+		{
+			do_step(g);
+			g->cycle++;
+		}
 		// For each valid execution of the live instruction, the machine must display:
 		// “A process shows that player X (champion_name) is alive”.
 		// “Player 2 (rainbowdash) won”.

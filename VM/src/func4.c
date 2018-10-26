@@ -12,14 +12,14 @@
 
 #include "../includes/vm_corewar.h"
 
-char		*get_codage(unsigned int codage)
+char		*get_codage(unsigned char codage)
 {
 	char			*cod;
 
 	cod = (char *)malloc(sizeof(char) * 3);
-	cod[0] = codage & 192;
-	cod[1] = codage & 48;
-	cod[2] = codage & 12;
+	cod[0] = (codage & 192) >> 6;
+	cod[1] = (codage & 48) >> 4;
+	cod[2] = (codage & 12) >> 2;
 	return (cod);
 }
 
@@ -33,7 +33,8 @@ int			get_args(t_field *map, t_cursor *c, unsigned int *args, int args_num)
 	i = -1;
 	offset = 0;
 	cod = get_codage(map[c->index + 1].byte);
-	c_index = c->index + 2;// 02 90  arg1 arg2 arg3
+
+	c_index = c->index + 1 + g_op_tab[c->command - 1].codage;
 	while (++i < args_num)
 	{
 		if (cod[i] == REG_CODE)
@@ -46,6 +47,7 @@ int			get_args(t_field *map, t_cursor *c, unsigned int *args, int args_num)
 		else if (cod[i] == IND_CODE)
 		{
 			from_map(&args[i], map, 2, c_index + offset);
+			args[i] >>= 16;
 			offset += 2;
 		}
 	}

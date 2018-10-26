@@ -44,7 +44,7 @@ int			live(t_game *g, t_cursor *c)
 	c->alive = 1;
 	if (!g->flags.v)
 		ft_printf("A process shows that player %d %S is alive",
-	c->parent_ind + 1, g->champ[c->parent_ind].prog_name);
+	c->parent_ind + 1, g->champ[(int)c->parent_ind].prog_name);
 	while (++i < g->champs_num)
 		if (15 - name == i)
 		{
@@ -60,8 +60,9 @@ int			ld(t_game *g, t_cursor *c)
 	char			*cod;
 	int				offset;
 
+	args = (unsigned int *)malloc(sizeof(unsigned int) * 2);
 	cod = get_codage(g->map[c->index + 1].byte & 252);
-	offset = get_args(g->map, c, args, 2);//takes 3 arguments
+	offset = get_args(g->map, c, args, 2);
 	if (cod[1] == REG_CODE && (cod[0] == DIR_CODE || cod[0] == IND_CODE))
 	{
 		if (cod[0] == IND_CODE)
@@ -73,6 +74,9 @@ int			ld(t_game *g, t_cursor *c)
 			c->registr[args[1]] = args[0];
 	}
 	c->carry = (c->registr[args[1]] == 0) ? 1 : 0;
+	ft_printf("pidor\n");
+	free(args);
+	free(cod);
 	return (offset + 2);
 }
 
@@ -82,6 +86,7 @@ int			st(t_game *g, t_cursor *c)
 	char			*cod;
 	int				offset;
 
+	args = (unsigned int *)malloc(sizeof(unsigned int) * 2);
 	cod = get_codage(g->map[c->index + 1].byte & 252);
 	offset = get_args(g->map, c, args, 2);
 	if (cod[1] == REG_CODE)
@@ -92,7 +97,9 @@ int			st(t_game *g, t_cursor *c)
 	else if (cod[1] == IND_CODE)
 	{
 		args[1] %= IDX_MOD;
-		g->map[c->index + args[1]].byte = args[0];
+		g->map[c->index + args[1]].byte = (char)args[0];
 	}
+	free(args);
+	free(cod);
 	return (offset + 2);
 }

@@ -97,7 +97,7 @@ typedef struct		s_op
 	char			opcode;
 	int				cycles;
 	char			label;
-	char			codage_octal;
+	char			codage;
 	char			carry;
 }					t_op;
 
