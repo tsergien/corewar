@@ -40,6 +40,8 @@ static void		controller(char c, t_game *g)
 		g->cycles_limit--;
 	else if (c == 101 && g->cycles_limit < 1000)
 		g->cycles_limit += 1;
+	else if (c == 's')
+		do_step(g);
 }
 
 static void		print_map(t_game *g, WINDOW *win)
@@ -66,6 +68,21 @@ static void		print_map(t_game *g, WINDOW *win)
 	}
 }
 
+static void		cursors_output(t_game *g, WINDOW *win)
+{
+	t_cursor	*temp;
+
+	init_pair(5, COLOR_BLACK, COLOR_WHITE);
+	temp = g->cursor;
+	wattron(win, COLOR_PAIR(5));
+	while (temp)
+	{
+		mvwprintw(win, temp->index / 64 + 2, 3 * (temp->index % 64) + 3, "%02x", g->map[temp->index].byte);
+		temp = temp->next;
+	}
+	wattroff(win, COLOR_PAIR(5));
+}
+
 static void		do_while(WINDOW *win1, WINDOW *win2, t_game *g)
 {
 	clock_t		prev;
@@ -87,13 +104,12 @@ static void		do_while(WINDOW *win1, WINDOW *win2, t_game *g)
 		wattroff(win1, COLOR_PAIR(5));
 		wattroff(win2, COLOR_PAIR(5));
 
-		do_step(g);
+		(!g->pause) ? do_step(g) : 0;
 
 		print_map(g, win1);
 		print_panel(g, win2);
+		cursors_output(g, win1);
 		controller(wgetch(win2), g);
-		if (!g->pause)
-			g->cycle++;
 	}
 }
 

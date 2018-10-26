@@ -70,7 +70,7 @@ void				get_champ(t_game *g, int fd, int ind)
 	unsigned char	*str;
 	unsigned int	temp;
 
-	(g->champ[ind].filled) ? ft_error("Tut uzhe est' Tanya!\n") : 0;
+	(g->champ[ind].filled) ? ft_error("Player is already filled!\n") : 0;
 	g->champ[ind].filled = 1;
 	if (rev(fd) != COREWAR_EXEC_MAGIC)
 		ft_error("No magic header!\n");

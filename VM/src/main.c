@@ -101,16 +101,15 @@ int			main(int argc, char **argv)
 			ft_printf("* Player %d, weighing %d bytes, \"%s\" (\"%s\") !)\n",
 		i + 1, g->champ[i].prog_size, g->champ[i].prog_name,
 		g->champ[i].comment);
-		int wh = -1;//del
-		while (is_alives(g->cursor) && g->cycles_to_die > 0 && ++wh < 150)
+		int wh = -2;//del
+		wh++;
+		while (is_alives(g->cursor) && g->cycles_to_die > 0)// && ++wh < 30000)
 		{
 			do_step(g);
 			g->cycle++;
+			// ft_printf("cycle: %d\n", wh);
 		}
-		// For each valid execution of the live instruction, the machine must display:
-		// “A process shows that player X (champion_name) is alive”.
 		// “Player 2 (rainbowdash) won”.
-
 	}
 	return (0);
 }

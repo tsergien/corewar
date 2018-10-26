@@ -6,14 +6,14 @@
 #    By: tsergien <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/10/19 10:23:10 by tsergien          #+#    #+#              #
-#    Updated: 2018/10/19 10:40:46 by tsergien         ###   ########.fr        #
+#    Updated: 2018/10/26 14:51:36 by tsergien         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = vm
 
 SRC_FILES = vm_get_champ.c main.c  op.c visual.c visual_panel.c usage_error.c game.c\
-			func1.c func2.c func3.c func4.c
+			f_lfork.c f_live_ld_st.c f_sti_ldi.c f_xor.c
 
 SRC_DIR = src/
 SRC = $(addprefix $(SRC_DIR), $(SRC_FILES))
@@ -35,12 +35,12 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	@make -C $(LIB_DIR)
-	@gcc -lncurses $(OBJ) -o $(NAME) -I $(HEADER) -L $(LIB_DIR) -lft
+	@gcc -lncurses  $(OBJ) -o $(NAME) -I $(HEADER) -L $(LIB_DIR) -lft
 	@echo "$(BLUE)***		$(NAME) compiled		***$(RESET_COLOR)"
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 	@mkdir -p $(OBJ_DIR)
-	@gcc $(WWW) -c -o $@ $<
+	@gcc -g $(WWW) -c -o $@ $<
 	
 clean:
 	@make clean -C $(LIB_DIR)
