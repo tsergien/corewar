@@ -1,0 +1,1 @@
+make re && ./vm champs/Gagnant.cor champs/Gagnant.cor -v
