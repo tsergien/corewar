@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../libft/libft.h"
+
 #include "../includes/op.h"
 
 int main(int argc, char **argv)
@@ -21,5 +21,7 @@ int main(int argc, char **argv)
         return 0;
     ass.fd = open(argv[argc - 1], O_RDONLY);
     parse_header(&ass);
+    ft_printf("%s\n", ass.header.prog_name);
+    ft_printf("%s", ass.header.comment);
     return 0;
 }

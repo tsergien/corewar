@@ -13,7 +13,7 @@
 
 NAME = asm
 
-SRC_FILES =  main.c op.c parse_header.c
+SRC_FILES =  main.c op.c parse_header.c errors.c    
 
 SRC_DIR = src/
 SRC = $(addprefix $(SRC_DIR), $(SRC_FILES))
@@ -23,7 +23,7 @@ OBJ_DIR = obj/
 OBJ = $(addprefix $(OBJ_DIR), $(OBJ_FILES))
 
 HEADER = includes/
-LIB_DIR = ../libft/
+LIB_DIR = ./libft/
 
 WWW = -Wall -Wextra -Werror
 

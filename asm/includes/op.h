@@ -16,6 +16,7 @@
 */
 
 #include <fcntl.h>
+#include "../libft/include/libft.h"
 
 #define IND_SIZE				2
 #define REG_SIZE				4
@@ -96,3 +97,8 @@ typedef struct	s_asm
 }				t_asm;
 
 void parse_header(t_asm * ass);
+void lexical_error(char *start, char *line, int j);
+void syntax_error_separator(char *start, char *line, int j);
+void syntax_error_indirect_label(char *start, char *line, int j);
+void syntax_error_instruction(char *start, char *line, int j);
+void syntax_error_string(char *start, char *line, int j);
