@@ -117,11 +117,11 @@
 //     free(line);
 // }
 
-int check_line(char **line, int j)
+int check_line(char **line, int line_number)
 {
     char *temp = *line;
 
-    while (**line == '\t' || **line == '\r' || **line == ' ')
+    while (**line == '\t' || **line == ' ')
         (*line)++;
     if (**line == '\0' || **line == COMMENT_CHAR || **line == ';')
         return 0;
@@ -129,46 +129,64 @@ int check_line(char **line, int j)
         if (!ft_strncmp(*line, NAME_CMD_STRING, 5) || !ft_strncmp(*line, COMMENT_CMD_STRING, 8)) 
             return (1);
     if (**line == '"')
-        syntax_error_string(temp, *line, j);
+        syntax_error_string(temp, *line, line_number);
     else if (if_consist("±§!@$%^&*.()+_-=/\\][`{}'<>", **line))
-        lexical_error(temp, *line, j);
+        lexical_error(temp, *line, line_number);
     else if (**line == ',')
-        syntax_error_separator(temp, *line, j);
+        syntax_error_separator(temp, *line, line_number);
     else if (**line == ':')
-        syntax_error_indirect_label(temp, *line, j);
+        syntax_error_indirect_label(temp, *line, line_number);
     else
-        syntax_error_instruction(temp, *line, j);
+        syntax_error_instruction(temp, *line, line_number);
     return 0;
 }
 
-void fillbuf(char *buf, t_asm *ass, char *line)
+int fillbuf(char *buf, t_asm *ass, char **line, int size)
 {
     int i = 0;
-    while (i < PROG_NAME_LENGTH)
+    (*line)++;
+    while (i < size)
     {
-        if (!*line)
+        if (!**line)
         {
-            if (get_next_line(ass->fd, &line) <= 0)
-            {
-                ft_printf("Syntax error at token [TOKEN] END \"(null)\"\n");
-                exit(0);
-            }
+            if (get_next_line(ass->fd, line) == 0)
+                return 0;
+            ass->line_number++;
             buf[i++] = '\n';
             //free(line); 
         }
-        if (*line == '\0')
+        if (**line == '\0')
             continue ;
-        if (*line == '\"')
+        if (**line == '\"')
+        {
+            while (**line)
+            {
+                (*line)++;
+                if (**line == ' ' || **line == '\t')
+                    continue;
+                else if (**line == '#' || **line == ';')
+                    break;
+                else
+                    return 1;
+            }
             break ;
-        buf[i++] = *line++;
+        }
+        buf[i++] = *((*line)++);
     }
-    if (*line != '\"')
-        ft_printf("[Error handled] Name is too big.\n");
+    if (i == size)
+    {
+        ft_printf("[Error handled] %s is too big.\n", size == PROG_NAME_LENGTH ? "Name" : "Comment");
+        exit(0);
+    }
+    if (size == PROG_NAME_LENGTH)
+        ass->header.name_exist = 1;
+    else
+        ass->header.comment_exist = 1;  
+    return 0;
 }
 
-void parse_dot(t_asm * ass, char *line, int j)
+void parse_dot(t_asm * ass, char *line, char* begin_line)
 {
-    char *temp = line;
     int i = 2;
 
     if (!ft_strncmp(line, NAME_CMD_STRING, 5))
@@ -178,17 +196,28 @@ void parse_dot(t_asm * ass, char *line, int j)
     }    
     else if (!ft_strncmp(line, COMMENT_CMD_STRING, 8))
         line += 8;
-    while(*line == '\t' || *line == '\r' || *line == ' ')
+    while(*line == '\t' || *line == ' ')
         line++;
     if (*line == '"')
     {
         if (i == 1)
-            fillbuf(ass->header.prog_name, ass, line + 1);
-        else 
-            fillbuf(ass->header.comment, ass, line + 1);        
+        {
+            if (ass->header.name_exist)
+                syntax_error_double_command(PROG_NAME_LENGTH, begin_line, begin_line, ass->line_number);
+            if (fillbuf(ass->header.prog_name, ass, &line, PROG_NAME_LENGTH))
+                syntax_error_instruction(begin_line, line, ass->line_number);
+        } 
+        else
+        {
+            if (ass->header.comment_exist)
+                syntax_error_double_command(COMMENT_LENGTH, begin_line, begin_line, ass->line_number);
+            if (fillbuf(ass->header.comment, ass, &line, COMMENT_LENGTH))
+                syntax_error_instruction(begin_line, line, ass->line_number);
+        } 
+                    
     }
     else
-        syntax_error_instruction(temp, line, j);
+        syntax_error_instruction(begin_line, line, ass->line_number);
 }
 
 void parse_header(t_asm * ass)
@@ -196,16 +225,15 @@ void parse_header(t_asm * ass)
     char *line;
     char *to_free;
     //int i = 0;
-    int j = 0;
-
+    ass->line_number = 0;
     while (get_next_line(ass->fd, &to_free) > 0)
     {
-        j++;
+        ass->line_number++;
         line = to_free;
         if (*line == '\0')
             continue ;
-        if (check_line(&line, j))
-            parse_dot(ass, line, j);
+        if (check_line(&line, ass->line_number))
+            parse_dot(ass, line, to_free);
         free(to_free);
     }
 }

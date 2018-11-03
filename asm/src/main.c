@@ -17,6 +17,8 @@ int main(int argc, char **argv)
 {
     t_asm ass;
 
+    ass.header.comment_exist = 0;
+    ass.header.name_exist = 0;
     if (argc == 1)
         return 0;
     ass.fd = open(argv[argc - 1], O_RDONLY);

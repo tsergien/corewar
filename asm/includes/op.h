@@ -74,6 +74,8 @@ typedef struct		header_s
 {
 	unsigned int		magic;
 	char				prog_name[PROG_NAME_LENGTH + 1];
+	char				name_exist;
+	char				comment_exist;
 	unsigned int		prog_size;
 	char				comment[COMMENT_LENGTH + 1];
 }					header_t;
@@ -93,12 +95,14 @@ typedef struct		s_op
 typedef struct	s_asm
 {
 	header_t header;
+	int line_number;
 	int fd;
 }				t_asm;
 
 void parse_header(t_asm * ass);
-void lexical_error(char *start, char *line, int j);
-void syntax_error_separator(char *start, char *line, int j);
-void syntax_error_indirect_label(char *start, char *line, int j);
-void syntax_error_instruction(char *start, char *line, int j);
-void syntax_error_string(char *start, char *line, int j);
+void lexical_error(char *start, char *line, int line_number);
+void syntax_error_separator(char *start, char *line, int line_number);
+void syntax_error_indirect_label(char *start, char *line, int line_number);
+void syntax_error_instruction(char *start, char *line, int line_number);
+void syntax_error_string(char *start, char *line, int line_number);
+void syntax_error_double_command(int size, char *start, char *line, int line_number);
