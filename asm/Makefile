@@ -13,7 +13,7 @@
 
 NAME = asm
 
-SRC_FILES =  main.c op.c parse_header.c errors.c    
+SRC_FILES =  main.c op.c parse_header.c errors.c parse_commands.c 
 
 SRC_DIR = src/
 SRC = $(addprefix $(SRC_DIR), $(SRC_FILES))

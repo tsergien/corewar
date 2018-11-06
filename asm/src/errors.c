@@ -24,18 +24,9 @@ void syntax_error_separator(char *start, char *line, int line_number)
     exit(0);
 }
 
-void syntax_error_indirect_label(char *start, char *line, int line_number)
+void syntax_error(char *start, char *line, int line_number, char *type)
 {
-    ft_printf("Syntax error at token [TOKEN][%03d:%03d] INDIRECT_LABEL \"", line_number, line - start + 1);
-    while(*line && *line != ' ' && *line != '"')
-        ft_putchar(*line++);
-    ft_putstr("\"\n");
-    exit(0);
-}
-
-void syntax_error_instruction(char *start, char *line, int line_number)
-{
-    ft_printf("Syntax error at token [TOKEN][%03d:%03d] INSTRUCTION \"", line_number, line - start + 1);
+    ft_printf("Syntax error at token [TOKEN][%03d:%03d] %s \"", line_number, line - start + 1, type);
     while(*line && *line != ' ' && *line != '"')
         ft_putchar(*line++);
     ft_putstr("\"\n");

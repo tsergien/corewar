@@ -19,11 +19,13 @@ int main(int argc, char **argv)
 
     ass.header.comment_exist = 0;
     ass.header.name_exist = 0;
-    if (argc == 1)
-        return 0;
+    ass.cmd_lst = NULL;
+    if (argc == 1){ft_printf("no file idiot"); return 0;};
     ass.fd = open(argv[argc - 1], O_RDONLY);
     parse_header(&ass);
+    parse_commands(&ass);
     ft_printf("%s\n", ass.header.prog_name);
     ft_printf("%s", ass.header.comment);
+    //system("leaks asm");
     return 0;
 }

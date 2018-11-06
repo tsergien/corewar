@@ -1,0 +1,44 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/tmaslyan/corewar/asm/includes/op.h
+fcntl.h
+-
+../libft/include/libft.h
+/Users/tmaslyan/corewar/asm/libft/include/libft.h
+
+/Users/tmaslyan/corewar/asm/libft/include/ft_printf.h
+unistd.h
+-
+stdarg.h
+-
+libft.h
+/Users/tmaslyan/corewar/asm/libft/include/libft.h
+
+/Users/tmaslyan/corewar/asm/libft/include/get_next_line.h
+libft.h
+/Users/tmaslyan/corewar/asm/libft/include/libft.h
+
+/Users/tmaslyan/corewar/asm/libft/include/libft.h
+unistd.h
+-
+stdlib.h
+-
+string.h
+-
+ft_printf.h
+/Users/tmaslyan/corewar/asm/libft/include/ft_printf.h
+get_next_line.h
+/Users/tmaslyan/corewar/asm/libft/include/get_next_line.h
+libft.h
+/Users/tmaslyan/corewar/asm/libft/include/libft.h
+
+/Users/tmaslyan/corewar/asm/src/main.c
+../includes/op.h
+/Users/tmaslyan/corewar/asm/includes/op.h
+

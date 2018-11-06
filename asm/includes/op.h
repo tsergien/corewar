@@ -70,15 +70,21 @@ typedef char	t_arg_type;
 # define COMMENT_LENGTH			(2048)
 # define COREWAR_EXEC_MAGIC		0xea83f3
 
-typedef struct		header_s
+typedef struct		s_header
 {
-	unsigned int		magic;
 	char				prog_name[PROG_NAME_LENGTH + 1];
 	char				name_exist;
 	char				comment_exist;
 	unsigned int		prog_size;
 	char				comment[COMMENT_LENGTH + 1];
-}					header_t;
+}					t_header;
+
+typedef struct		s_labels
+{
+	char *label;
+	struct s_labels *next;
+}					t_labels;
+
 
 typedef struct		s_op
 {
@@ -86,23 +92,43 @@ typedef struct		s_op
 	char			args_amount;
 	int				args[3];
 	char			opcode;
-	int				cycles;
-	const char		*label;
 	char			codage;
-	char			carry;
+	int				label_size;
 }					t_op;
+
+typedef struct		s_arg
+{
+	int				num_value;
+	char			*str_value;
+	int				size_of_arg;
+}					t_arg;
+
+typedef struct		s_command
+{
+	t_arg		args[3];
+	char			opcode;
+	int				size_to_this_command;
+	int				size_of_this_command;
+	struct s_labels	*label;
+	struct s_command *next;
+}					t_command;
+
 
 typedef struct	s_asm
 {
-	header_t header;
+	t_header header;
+	char *begin_line;
 	int line_number;
 	int fd;
+	struct s_command *cmd_lst;
 }				t_asm;
+
+extern t_op g_op_tab[16];
 
 void parse_header(t_asm * ass);
 void lexical_error(char *start, char *line, int line_number);
 void syntax_error_separator(char *start, char *line, int line_number);
-void syntax_error_indirect_label(char *start, char *line, int line_number);
-void syntax_error_instruction(char *start, char *line, int line_number);
+void syntax_error(char *start, char *line, int line_number, char *type);
 void syntax_error_string(char *start, char *line, int line_number);
 void syntax_error_double_command(int size, char *start, char *line, int line_number);
+void parse_commands(t_asm *ass);
