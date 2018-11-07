@@ -11,6 +11,7 @@ add_executable(asm
         libft/include/ft_printf.h
         libft/include/get_next_line.h
         libft/include/libft.h
+        libft/src/consist.c
         libft/src/ft_atoi.c
         libft/src/ft_bzero.c
         libft/src/ft_com_denom.c
@@ -80,7 +81,6 @@ add_executable(asm
         libft/src/ft_toupper.c
         libft/src/get_dnbr.c
         libft/src/get_next_line.c
-        libft/src/if_consist.c
         libft/src/itoa_base.c
         libft/src/len_int.c
         libft/src/parse_flags.c
@@ -99,4 +99,5 @@ add_executable(asm
         src/errors.c
         src/main.c
         src/op.c
+        src/parse_commands.c
         src/parse_header.c)

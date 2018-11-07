@@ -38,7 +38,7 @@ get_next_line.h
 libft.h
 /Users/tmaslyan/corewar/asm/libft/include/libft.h
 
-/Users/tmaslyan/corewar/asm/src/main.c
+/Users/tmaslyan/corewar/asm/src/parse_commands.c
 ../includes/op.h
 /Users/tmaslyan/corewar/asm/includes/op.h
 

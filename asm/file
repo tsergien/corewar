@@ -1,11 +1,10 @@
 
-    .comment  " "
+    .comment  "comment"
                                 
- .name  " "
+ .name  "name"
 
+label: sti r1, %:live   , %1
 label:
 label:
-label:
-v
 label:
 

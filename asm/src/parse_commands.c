@@ -14,7 +14,7 @@
 
 t_command *get_cmd_list(t_asm *ass)
 {
-    t_command *c_temp = ass->cmd_lst;
+    t_command *c_temp;
 
     if (!ass->cmd_lst)
     {
@@ -26,14 +26,15 @@ t_command *get_cmd_list(t_asm *ass)
     }
     else
     {
-        while (!c_temp->next)
+        c_temp = ass->cmd_lst;
+        while (c_temp->next)
             c_temp = c_temp->next;
     }
     if (c_temp->opcode)
     {
         c_temp->next = (t_command *)malloc(sizeof(t_command));
-        c_temp->opcode = 0;
         c_temp = c_temp->next;
+        c_temp->opcode = 0;
         c_temp->label = NULL;
         c_temp->next = NULL;
     }
@@ -48,17 +49,18 @@ t_labels *get_label_list(t_command *c_temp)
     if (!c_temp->label)
     {
         c_temp->label = (t_labels *)malloc(sizeof(t_labels));
-        c_temp->next = NULL;
         l_temp = c_temp->label;
     }
     else
     {
         l_temp = c_temp->label;
-        while (!l_temp->next)
+        while (l_temp->next)
             l_temp = l_temp->next;
         l_temp->next = (t_labels *)malloc(sizeof(t_labels));
         l_temp = l_temp->next;
     }
+    l_temp->next = NULL;
+    l_temp->label = NULL;
     return (l_temp);
 }
 
@@ -95,22 +97,20 @@ void push_command(t_asm *ass, t_command *c_temp, int index, char *line)
     char **args;
     int i;
     int j;
-    c_temp->opcode = index;
+    c_temp->opcode = g_op_tab[index].opcode;
 
     check_valid_separator(ass, line, index);
-    while(*line == ' ' || *line == '\t')
-        line++;
     if (*line == COMMENT_CHAR)
     {
         *line = 0;
         syntax_error(ass->begin_line, line, ass->line_number, "ENDLINE");
-    } 
+    }
     args = ft_strsplit(line, SEPARATOR_CHAR);
     i = 0;
     while (i < g_op_tab[index].args_amount)
     {
         j = 0;
-        c_temp->args[i].num_value = j;
+        c_temp->args[i].num_value = j + 6;
         i++;
         j++;
     }
@@ -121,41 +121,48 @@ void check_command(t_asm *ass, t_command *c_temp, char *line)
     char *temp;
     int i;
 
-    
     if (!*line || *line == '#')
         return ;
+    while(*line == ' ' || *line == '\t')
+        line++;
     temp = line;
     i = 0;
     while (i < 16)
     {
         if (ft_strnequ(line, g_op_tab[i].name, ft_strlen(g_op_tab[i].name)))
+        {
             push_command(ass, c_temp, i, line + ft_strlen(g_op_tab[i].name));
+            break;
+        }
         i++;
     }
 
 }
 
-
 void push_lable(t_asm *ass, char *line)
 {
-    t_command *c_temp = ass->cmd_lst;
+    t_command *c_temp;
     t_labels *l_temp;
 
     c_temp = get_cmd_list(ass);
     l_temp = get_label_list(c_temp);
     l_temp->label = ft_strdup(line);
-    check_command(ass, c_temp, line + ft_strlen(l_temp->label) + 2);
+    ft_printf("%d\n", (int)(*(line + ft_strlen(l_temp->label) + 1)));
+    if (*(line + ft_strlen(l_temp->label) + 1))
+        check_command(ass, c_temp, line + ft_strlen(l_temp->label) + 1);
 }
 
 void check_lable(t_asm *ass, char *line)
 {
     char *temp;
+
     while(*line == ' ' || *line == '\t')
         line++;
     if (!*line || *line == '#')
         return ;
     temp = line;
-    while (consist(LABEL_CHARS, *line++));
+    while (consist(LABEL_CHARS, *line))
+        line++;
     if (*line == LABEL_CHAR)
     {
         *line++ = 0;

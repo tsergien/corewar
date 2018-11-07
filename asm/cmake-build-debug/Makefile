@@ -123,6 +123,33 @@ asm/fast:
 	$(MAKE) -f CMakeFiles/asm.dir/build.make CMakeFiles/asm.dir/build
 .PHONY : asm/fast
 
+libft/src/consist.o: libft/src/consist.c.o
+
+.PHONY : libft/src/consist.o
+
+# target to build an object file
+libft/src/consist.c.o:
+	$(MAKE) -f CMakeFiles/asm.dir/build.make CMakeFiles/asm.dir/libft/src/consist.c.o
+.PHONY : libft/src/consist.c.o
+
+libft/src/consist.i: libft/src/consist.c.i
+
+.PHONY : libft/src/consist.i
+
+# target to preprocess a source file
+libft/src/consist.c.i:
+	$(MAKE) -f CMakeFiles/asm.dir/build.make CMakeFiles/asm.dir/libft/src/consist.c.i
+.PHONY : libft/src/consist.c.i
+
+libft/src/consist.s: libft/src/consist.c.s
+
+.PHONY : libft/src/consist.s
+
+# target to generate assembly for a file
+libft/src/consist.c.s:
+	$(MAKE) -f CMakeFiles/asm.dir/build.make CMakeFiles/asm.dir/libft/src/consist.c.s
+.PHONY : libft/src/consist.c.s
+
 libft/src/ft_atoi.o: libft/src/ft_atoi.c.o
 
 .PHONY : libft/src/ft_atoi.o
@@ -1986,33 +2013,6 @@ libft/src/get_next_line.c.s:
 	$(MAKE) -f CMakeFiles/asm.dir/build.make CMakeFiles/asm.dir/libft/src/get_next_line.c.s
 .PHONY : libft/src/get_next_line.c.s
 
-libft/src/.o: libft/src/.c.o
-
-.PHONY : libft/src/.o
-
-# target to build an object file
-libft/src/.c.o:
-	$(MAKE) -f CMakeFiles/asm.dir/build.make CMakeFiles/asm.dir/libft/src/.c.o
-.PHONY : libft/src/.c.o
-
-libft/src/.i: libft/src/.c.i
-
-.PHONY : libft/src/.i
-
-# target to preprocess a source file
-libft/src/.c.i:
-	$(MAKE) -f CMakeFiles/asm.dir/build.make CMakeFiles/asm.dir/libft/src/.c.i
-.PHONY : libft/src/.c.i
-
-libft/src/.s: libft/src/.c.s
-
-.PHONY : libft/src/.s
-
-# target to generate assembly for a file
-libft/src/.c.s:
-	$(MAKE) -f CMakeFiles/asm.dir/build.make CMakeFiles/asm.dir/libft/src/.c.s
-.PHONY : libft/src/.c.s
-
 libft/src/itoa_base.o: libft/src/itoa_base.c.o
 
 .PHONY : libft/src/itoa_base.o
@@ -2499,6 +2499,33 @@ src/op.c.s:
 	$(MAKE) -f CMakeFiles/asm.dir/build.make CMakeFiles/asm.dir/src/op.c.s
 .PHONY : src/op.c.s
 
+src/parse_commands.o: src/parse_commands.c.o
+
+.PHONY : src/parse_commands.o
+
+# target to build an object file
+src/parse_commands.c.o:
+	$(MAKE) -f CMakeFiles/asm.dir/build.make CMakeFiles/asm.dir/src/parse_commands.c.o
+.PHONY : src/parse_commands.c.o
+
+src/parse_commands.i: src/parse_commands.c.i
+
+.PHONY : src/parse_commands.i
+
+# target to preprocess a source file
+src/parse_commands.c.i:
+	$(MAKE) -f CMakeFiles/asm.dir/build.make CMakeFiles/asm.dir/src/parse_commands.c.i
+.PHONY : src/parse_commands.c.i
+
+src/parse_commands.s: src/parse_commands.c.s
+
+.PHONY : src/parse_commands.s
+
+# target to generate assembly for a file
+src/parse_commands.c.s:
+	$(MAKE) -f CMakeFiles/asm.dir/build.make CMakeFiles/asm.dir/src/parse_commands.c.s
+.PHONY : src/parse_commands.c.s
+
 src/parse_header.o: src/parse_header.c.o
 
 .PHONY : src/parse_header.o
@@ -2535,6 +2562,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... asm"
+	@echo "... libft/src/consist.o"
+	@echo "... libft/src/consist.i"
+	@echo "... libft/src/consist.s"
 	@echo "... libft/src/ft_atoi.o"
 	@echo "... libft/src/ft_atoi.i"
 	@echo "... libft/src/ft_atoi.s"
@@ -2742,9 +2772,6 @@ help:
 	@echo "... libft/src/get_next_line.o"
 	@echo "... libft/src/get_next_line.i"
 	@echo "... libft/src/get_next_line.s"
-	@echo "... libft/src/.o"
-	@echo "... libft/src/.i"
-	@echo "... libft/src/.s"
 	@echo "... libft/src/itoa_base.o"
 	@echo "... libft/src/itoa_base.i"
 	@echo "... libft/src/itoa_base.s"
@@ -2799,6 +2826,9 @@ help:
 	@echo "... src/op.o"
 	@echo "... src/op.i"
 	@echo "... src/op.s"
+	@echo "... src/parse_commands.o"
+	@echo "... src/parse_commands.i"
+	@echo "... src/parse_commands.s"
 	@echo "... src/parse_header.o"
 	@echo "... src/parse_header.i"
 	@echo "... src/parse_header.s"

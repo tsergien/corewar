@@ -96,6 +96,9 @@
 		<Unit filename="/Users/tmaslyan/corewar/asm/libft/include/libft.h">
 			<Option target="asm"/>
 		</Unit>
+		<Unit filename="/Users/tmaslyan/corewar/asm/libft/src/consist.c">
+			<Option target="asm"/>
+		</Unit>
 		<Unit filename="/Users/tmaslyan/corewar/asm/libft/src/ft_atoi.c">
 			<Option target="asm"/>
 		</Unit>
@@ -303,9 +306,6 @@
 		<Unit filename="/Users/tmaslyan/corewar/asm/libft/src/get_next_line.c">
 			<Option target="asm"/>
 		</Unit>
-		<Unit filename="/Users/tmaslyan/corewar/asm/libft/src/if_consist.c">
-			<Option target="asm"/>
-		</Unit>
 		<Unit filename="/Users/tmaslyan/corewar/asm/libft/src/itoa_base.c">
 			<Option target="asm"/>
 		</Unit>
@@ -358,6 +358,9 @@
 			<Option target="asm"/>
 		</Unit>
 		<Unit filename="/Users/tmaslyan/corewar/asm/src/op.c">
+			<Option target="asm"/>
+		</Unit>
+		<Unit filename="/Users/tmaslyan/corewar/asm/src/parse_commands.c">
 			<Option target="asm"/>
 		</Unit>
 		<Unit filename="/Users/tmaslyan/corewar/asm/src/parse_header.c">

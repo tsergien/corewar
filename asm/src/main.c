@@ -25,7 +25,14 @@ int main(int argc, char **argv)
     parse_header(&ass);
     parse_commands(&ass);
     ft_printf("%s\n", ass.header.prog_name);
-    ft_printf("%s", ass.header.comment);
+    ft_printf("%s\n", ass.header.comment);
+    t_labels *temp = ass.cmd_lst->label;
+    while(temp)
+    {
+        ft_printf("%s\n", temp->label);
+        temp = temp->next;
+    }
+
     //system("leaks asm");
     return 0;
 }

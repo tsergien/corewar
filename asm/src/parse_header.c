@@ -118,12 +118,9 @@ void parse_header(t_asm *ass)
         line = ass->begin_line;
         if (*line == '\0')
             continue ;
-        if (!ass->header.comment_exist || !ass->header.name_exist)
-        {
-            if (check_line(&line, ass->line_number))
+        if (check_line(&line, ass->line_number))
                 parse_dot(ass, line);
-        }
-        else
+        if (ass->header.comment_exist && ass->header.name_exist)
         {
             free(ass->begin_line); 
             return ;    

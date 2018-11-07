@@ -4,6 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
+  "/Users/tmaslyan/corewar/asm/libft/src/consist.c" "/Users/tmaslyan/corewar/asm/cmake-build-debug/CMakeFiles/asm.dir/libft/src/consist.c.o"
   "/Users/tmaslyan/corewar/asm/libft/src/ft_atoi.c" "/Users/tmaslyan/corewar/asm/cmake-build-debug/CMakeFiles/asm.dir/libft/src/ft_atoi.c.o"
   "/Users/tmaslyan/corewar/asm/libft/src/ft_bzero.c" "/Users/tmaslyan/corewar/asm/cmake-build-debug/CMakeFiles/asm.dir/libft/src/ft_bzero.c.o"
   "/Users/tmaslyan/corewar/asm/libft/src/ft_com_denom.c" "/Users/tmaslyan/corewar/asm/cmake-build-debug/CMakeFiles/asm.dir/libft/src/ft_com_denom.c.o"
@@ -73,7 +74,6 @@ set(CMAKE_DEPENDS_CHECK_C
   "/Users/tmaslyan/corewar/asm/libft/src/ft_toupper.c" "/Users/tmaslyan/corewar/asm/cmake-build-debug/CMakeFiles/asm.dir/libft/src/ft_toupper.c.o"
   "/Users/tmaslyan/corewar/asm/libft/src/get_dnbr.c" "/Users/tmaslyan/corewar/asm/cmake-build-debug/CMakeFiles/asm.dir/libft/src/get_dnbr.c.o"
   "/Users/tmaslyan/corewar/asm/libft/src/get_next_line.c" "/Users/tmaslyan/corewar/asm/cmake-build-debug/CMakeFiles/asm.dir/libft/src/get_next_line.c.o"
-  "/Users/tmaslyan/corewar/asm/libft/src/if_consist.c" "/Users/tmaslyan/corewar/asm/cmake-build-debug/CMakeFiles/asm.dir/libft/src/if_consist.c.o"
   "/Users/tmaslyan/corewar/asm/libft/src/itoa_base.c" "/Users/tmaslyan/corewar/asm/cmake-build-debug/CMakeFiles/asm.dir/libft/src/itoa_base.c.o"
   "/Users/tmaslyan/corewar/asm/libft/src/len_int.c" "/Users/tmaslyan/corewar/asm/cmake-build-debug/CMakeFiles/asm.dir/libft/src/len_int.c.o"
   "/Users/tmaslyan/corewar/asm/libft/src/parse_flags.c" "/Users/tmaslyan/corewar/asm/cmake-build-debug/CMakeFiles/asm.dir/libft/src/parse_flags.c.o"
@@ -92,6 +92,7 @@ set(CMAKE_DEPENDS_CHECK_C
   "/Users/tmaslyan/corewar/asm/src/errors.c" "/Users/tmaslyan/corewar/asm/cmake-build-debug/CMakeFiles/asm.dir/src/errors.c.o"
   "/Users/tmaslyan/corewar/asm/src/main.c" "/Users/tmaslyan/corewar/asm/cmake-build-debug/CMakeFiles/asm.dir/src/main.c.o"
   "/Users/tmaslyan/corewar/asm/src/op.c" "/Users/tmaslyan/corewar/asm/cmake-build-debug/CMakeFiles/asm.dir/src/op.c.o"
+  "/Users/tmaslyan/corewar/asm/src/parse_commands.c" "/Users/tmaslyan/corewar/asm/cmake-build-debug/CMakeFiles/asm.dir/src/parse_commands.c.o"
   "/Users/tmaslyan/corewar/asm/src/parse_header.c" "/Users/tmaslyan/corewar/asm/cmake-build-debug/CMakeFiles/asm.dir/src/parse_header.c.o"
   )
 set(CMAKE_C_COMPILER_ID "AppleClang")

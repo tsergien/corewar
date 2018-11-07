@@ -1,4 +1,5 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/asm.dir/libft/src/consist.c.o"
   "CMakeFiles/asm.dir/libft/src/ft_atoi.c.o"
   "CMakeFiles/asm.dir/libft/src/ft_bzero.c.o"
   "CMakeFiles/asm.dir/libft/src/ft_com_denom.c.o"
@@ -68,7 +69,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/asm.dir/libft/src/ft_toupper.c.o"
   "CMakeFiles/asm.dir/libft/src/get_dnbr.c.o"
   "CMakeFiles/asm.dir/libft/src/get_next_line.c.o"
-  "CMakeFiles/asm.dir/libft/src/if_consist.c.o"
   "CMakeFiles/asm.dir/libft/src/itoa_base.c.o"
   "CMakeFiles/asm.dir/libft/src/len_int.c.o"
   "CMakeFiles/asm.dir/libft/src/parse_flags.c.o"
@@ -87,6 +87,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/asm.dir/src/errors.c.o"
   "CMakeFiles/asm.dir/src/main.c.o"
   "CMakeFiles/asm.dir/src/op.c.o"
+  "CMakeFiles/asm.dir/src/parse_commands.c.o"
   "CMakeFiles/asm.dir/src/parse_header.c.o"
   "asm.pdb"
   "asm"
