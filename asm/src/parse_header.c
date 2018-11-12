@@ -60,7 +60,7 @@ void fillbuf(char *buf, t_asm *ass, char **line, int size)
             {
                 if (!**line || **line == ' ' || **line == '\t')
                     continue;
-                else if (**line == '#' || **line == ';')
+                else if (**line == COMMENT_CHAR || **line == ';')
                     break;
                 else
                     syntax_error(ass->begin_line, *line, ass->line_number, "INSTRUCTION");  
@@ -115,6 +115,7 @@ void parse_header(t_asm *ass)
     while (get_next_line(ass->fd, &ass->begin_line) > 0)
     {
         ass->line_number++;
+        ass->last_line_size = ft_strlen(ass->begin_line);
         line = ass->begin_line;
         if (*line == '\0')
             continue ;

@@ -17,7 +17,7 @@ t_op    g_op_tab[16] =
 	{"lfork", 1, {T_DIR}, 15, 0, 2},
 	{"lldi", 3, {T_REG | T_DIR | T_IND, T_DIR | T_REG, T_REG}, 14, 1, 2},
 	{"live", 1, {T_DIR}, 1, 0, 4},
-	{"zjmp", 1, {T_DIR}, 9, 20, 0},
+	{"zjmp", 1, {T_DIR}, 9, 20, 2},
 	{"ldi", 3, {T_REG | T_DIR | T_IND, T_DIR | T_REG, T_REG}, 10, 1, 2},
 	{"sti", 3, {T_REG, T_REG | T_DIR | T_IND, T_DIR | T_REG}, 11, 1, 2},
 	{"fork", 1, {T_DIR}, 12, 0, 2},

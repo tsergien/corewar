@@ -98,7 +98,7 @@ typedef struct		s_op
 
 typedef struct		s_arg
 {
-	int				num_value;
+	long long int	num_value;
 	char			*str_value;
 	int				size_of_arg;
 }					t_arg;
@@ -114,14 +114,15 @@ typedef struct		s_command
 }					t_command;
 
 
-typedef struct	s_asm
+typedef struct		s_asm
 {
 	t_header header;
 	char *begin_line;
 	int line_number;
 	int fd;
+	int last_line_size;
 	struct s_command *cmd_lst;
-}				t_asm;
+}					t_asm;
 
 extern t_op g_op_tab[16];
 
