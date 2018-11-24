@@ -122,7 +122,8 @@ typedef struct		s_command
 typedef struct      s_arg_error
 {
     char **args;
-    char **args_temp;
+	int	count;
+	int i;
     char *line;
 }                   t_arg_error;
 
@@ -164,10 +165,8 @@ int		reverse_byte(unsigned int nbr, int size);
 void	check_lable(t_asm *ass, char *line);
 void	check_last_line(char *buf);
 void	check_command(t_asm *ass, t_command *c_temp, char *line);
-void	check_end_arg_line(t_arg_error *err, t_command *c_temp,
-	int i, t_asm *ass);
-void	check_begin_arg_line(t_arg_error *err, t_command *c_temp, int i,
-		t_asm *ass);
+void	check_end_arg_line(t_arg_error *err, t_command *c_temp, t_asm *ass);
+void	check_begin_arg_line(t_arg_error *err, t_command *c_temp, t_asm *ass);
 void	push_command(t_asm *ass, t_command *c_temp, int index, char *line);
 t_labels *get_label_list(t_command *c_temp);
 t_command *get_cmd_list(t_asm *ass);
@@ -176,5 +175,6 @@ void	push_lable(t_asm *ass, char *line);
 void	count_codage(int i, int type, t_command *c_temp);
 void	check_valid_separator(t_asm *ass, char *line, int index);
 int		end_header_line(char **line, t_asm *ass);
+void get_str_value(t_arg_error *err, t_command *c_temp);
 
 #endif

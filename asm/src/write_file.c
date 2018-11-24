@@ -37,12 +37,18 @@ void	make_execute(t_asm *ass)
 	char *dot;
 
 	dot = ft_strchr(ass->binary_name, '.');
-	if (dot)
+	while (dot)
 	{
-		*dot = 0;
-		ft_strcat(ass->binary_name, ".cor");
+		if (ft_strnequ(dot, ".s", 3))
+		{
+			*dot = 0;
+			ft_strcat(ass->binary_name, ".cor");
+			break ;
+		}
+		dot++;
+		dot = ft_strchr(dot, '.');
 	}
-	else
+	if (!dot)
 		ft_strcpy(ass->binary_name, ".cor");
 	ass->binary_fd = open(ass->binary_name, O_RDWR | O_TRUNC | O_CREAT, 0777);
 }

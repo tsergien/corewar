@@ -14,24 +14,7 @@
 
 char		*get_error_line_address(t_arg_error *err)
 {
-	int		count;
-	char	**temp;
-
-	count = 0;
-	temp = err->args_temp;
-	while (*temp)
-	{
-		while (**temp)
-		{
-			if (*err->args == *temp)
-				return (err->line + count);
-			count++;
-			(*temp)++;
-		}
-		temp++;
-		count++;
-	}
-	return (err->line + count);
+	return (err->line + err->count + err->i);
 }
 
 t_command	*get_cmd_list(t_asm *ass)

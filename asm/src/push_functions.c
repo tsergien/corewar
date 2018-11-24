@@ -12,20 +12,22 @@
 
 #include "../includes/op.h"
 
-void	push_treg(t_arg_error *err, t_command *c_temp, int i, t_asm *ass)
+void	push_treg(t_arg_error *err, t_command *c_temp, t_asm *ass)
 {
 	if (**err->args == 'r')
 	{
 		(*err->args)++;
+		err->count++;
 		if (ft_isdigit(**err->args))
 		{
-			c_temp->args[i].num_value = ft_atoi(*err->args);
-			if (c_temp->args[i].num_value < 1 || c_temp->args[i].num_value > 16)
+			c_temp->args[err->i].num_value = ft_atoi(*err->args);
+			if (c_temp->args[err->i].num_value < 1 ||
+				c_temp->args[err->i].num_value > 16)
 				syntax_error(ass->begin_line, get_error_line_address(err),
 				ass->line_number, "INSTRUCTION");
-			c_temp->args[i].size_of_arg = 1;
-			c_temp->args[i].type_of_arg = T_REG;
-			count_codage(i, T_REG, c_temp);
+			c_temp->args[err->i].size_of_arg = 1;
+			c_temp->args[err->i].type_of_arg = T_REG;
+			count_codage(err->i, T_REG, c_temp);
 		}
 		else
 			syntax_error(ass->begin_line, get_error_line_address(err),
@@ -33,84 +35,62 @@ void	push_treg(t_arg_error *err, t_command *c_temp, int i, t_asm *ass)
 	}
 }
 
-void	push_tdir(t_arg_error *err, t_command *c_temp, int i, t_asm *ass)
+void	push_tdir(t_arg_error *err, t_command *c_temp, t_asm *ass)
 {
-	char	*temp;
-	int		k;
-
 	if (**err->args == DIRECT_CHAR)
 	{
 		(*err->args)++;
+		err->count++;
 		if (**err->args == LABEL_CHAR)
-		{
-			(*err->args)++;
-			temp = ft_strdup(*err->args);
-			k = 0;
-			while (temp[k] && temp[k] != ' ' && temp[k] != '\t')
-				k++;
-			temp[k] = 0;
-			c_temp->args[i].str_value = temp;
-		}
+			get_str_value(err, c_temp);
 		else if (**err->args == '-' || ft_isdigit(**err->args))
-			c_temp->args[i].num_value = ft_atoi(*err->args);
+			c_temp->args[err->i].num_value = ft_atoi(*err->args);
 		else
 			syntax_error(ass->begin_line, get_error_line_address(err),
 			ass->line_number, "INSTRUCTION");
-		c_temp->args[i].size_of_arg = g_op_tab[c_temp->index].label_size;
-		c_temp->args[i].type_of_arg = T_DIR;
-		count_codage(i, T_DIR, c_temp);
+		c_temp->args[err->i].size_of_arg = g_op_tab[c_temp->index].label_size;
+		c_temp->args[err->i].type_of_arg = T_DIR;
+		count_codage(err->i, T_DIR, c_temp);
 	}
 }
 
-void	push_tind(t_arg_error *err, t_command *c_temp, int i, t_asm *ass)
+void	push_tind(t_arg_error *err, t_command *c_temp, t_asm *ass)
 {
-	char	*temp;
-	int		k;
-
 	if (**err->args == LABEL_CHAR)
-	{
-		(*err->args)++;
-		temp = ft_strdup(*err->args);
-		k = 0;
-		while (temp[k] && temp[k] != ' ' && temp[k] != '\t')
-			k++;
-		temp[k] = 0;
-		c_temp->args[i].str_value = temp;
-	}
+		get_str_value(err, c_temp);
 	else if (ft_isdigit(**err->args) || **err->args == '-')
-		c_temp->args[i].num_value = ft_atoi(*err->args);
+		c_temp->args[err->i].num_value = ft_atoi(*err->args);
 	else
 		syntax_error(ass->begin_line, get_error_line_address(err),
 		ass->line_number, "INSTRUCTION");
-	c_temp->args[i].size_of_arg = 2;
-	c_temp->args[i].type_of_arg = T_IND;
-	count_codage(i, T_IND, c_temp);
+	c_temp->args[err->i].size_of_arg = 2;
+	c_temp->args[err->i].type_of_arg = T_IND;
+	count_codage(err->i, T_IND, c_temp);
 }
 
 void	push_args(t_asm *ass, t_command *c_temp, char *line, char **args)
 {
-	int			i;
 	t_arg_error	err;
 
-	i = 0;
+	err.i = 0;
+	err.count = 0;
 	err.args = args;
-	err.args_temp = args;
 	err.line = line;
 	while (*err.args)
 	{
-		check_begin_arg_line(&err, c_temp, i, ass);
-		if (g_op_tab[c_temp->index].args[i] & T_REG)
-			push_treg(&err, c_temp, i, ass);
-		if (g_op_tab[c_temp->index].args[i] & T_DIR)
-			push_tdir(&err, c_temp, i, ass);
-		if ((g_op_tab[c_temp->index].args[i] & T_IND)
-		&& !c_temp->args[i].size_of_arg)
-			push_tind(&err, c_temp, i, ass);
-		check_end_arg_line(&err, c_temp, i, ass);
+		check_begin_arg_line(&err, c_temp, ass);
+		if (g_op_tab[c_temp->index].args[err.i] & T_REG)
+			push_treg(&err, c_temp, ass);
+		if (g_op_tab[c_temp->index].args[err.i] & T_DIR)
+			push_tdir(&err, c_temp, ass);
+		if ((g_op_tab[c_temp->index].args[err.i] & T_IND)
+		&& !c_temp->args[err.i].size_of_arg)
+			push_tind(&err, c_temp, ass);
+		check_end_arg_line(&err, c_temp, ass);
 		err.args++;
-		i++;
+		err.i++;
 	}
-	if ((err.args - err.args_temp) != g_op_tab[c_temp->index].args_amount)
+	if (err.i != g_op_tab[c_temp->index].args_amount)
 		simple_error("Invalid number of arguments", ass->line_number);
 }
 

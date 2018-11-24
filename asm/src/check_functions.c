@@ -79,29 +79,31 @@ void	check_command(t_asm *ass, t_command *c_temp, char *line)
 	lexical_error(ass->begin_line, line, ass->line_number);
 }
 
-void	check_end_arg_line(t_arg_error *err, t_command *c_temp,
-	int i, t_asm *ass)
+void	check_end_arg_line(t_arg_error *err, t_command *c_temp, t_asm *ass)
 {
-	if (c_temp->args[i].str_value == NULL)
-		*err->args += len_int(c_temp->args[i].num_value);
+	if (c_temp->args[err->i].str_value == NULL)
+		*err->args += len_int(c_temp->args[err->i].num_value);
 	else
-		*err->args += ft_strlen(c_temp->args[i].str_value);
+		*err->args += ft_strlen(c_temp->args[err->i].str_value);
 	while (**err->args)
 	{
 		if (**err->args != ' ' && **err->args != '\t')
 			syntax_error(ass->begin_line, get_error_line_address(err),
 				ass->line_number, "INSTRUCTION");
 		(*err->args)++;
+		err->count++;
 	}
 }
 
-void	check_begin_arg_line(t_arg_error *err, t_command *c_temp, int i,
-		t_asm *ass)
+void	check_begin_arg_line(t_arg_error *err, t_command *c_temp, t_asm *ass)
 {
-	c_temp->args[i].str_value = NULL;
-	c_temp->args[i].size_of_arg = 0;
+	c_temp->args[err->i].str_value = NULL;
+	c_temp->args[err->i].size_of_arg = 0;
 	while (**err->args == ' ' || **err->args == '\t')
+	{
 		(*err->args)++;
+		err->count++;
+	}
 	if (**err->args != DIRECT_CHAR && **err->args != '-'
 	&& !ft_isdigit(**err->args)
 	&& **err->args != 'r' && **err->args != LABEL_CHAR)
