@@ -10,6 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef OP_H
+#define OP_H
+
 /*
 ** Toutes les tailles sont en octets.
 ** On part du principe qu'un int fait 32 bits. Est-ce vrai chez vous ?
@@ -98,25 +101,44 @@ typedef struct		s_op
 
 typedef struct		s_arg
 {
-	long long int	num_value;
+    long            num_value;
 	char			*str_value;
 	int				size_of_arg;
+	char            type_of_arg;
 }					t_arg;
 
 typedef struct		s_command
 {
 	t_arg		args[3];
 	char			opcode;
-	int				size_to_this_command;
-	int				size_of_this_command;
+	int 			index;
+	unsigned char            codage;
+	int				size_before;
+	int				size_of;
 	struct s_labels	*label;
 	struct s_command *next;
 }					t_command;
 
+typedef struct      s_arg_error
+{
+    char **args;
+    char **args_temp;
+    char *line;
+}                   t_arg_error;
+
+typedef struct		s_flag
+{
+	char	flag_p;
+	char	flag_r;
+}					t_flag;
 
 typedef struct		s_asm
 {
 	t_header header;
+	t_flag flags;
+	int magic;
+	char *binary_name;
+	int  binary_fd;
 	char *begin_line;
 	int line_number;
 	int fd;
@@ -133,3 +155,26 @@ void syntax_error(char *start, char *line, int line_number, char *type);
 void syntax_error_string(char *start, char *line, int line_number);
 void syntax_error_double_command(int size, char *start, char *line, int line_number);
 void parse_commands(t_asm *ass);
+void simple_error(const char *str, int line_number);
+void bonus_flag_info(t_asm *ass);
+void	count_size(t_asm *ass);
+void 	bonus_flag_info(t_asm *ass);
+void	write_file(t_asm *ass);
+int		reverse_byte(unsigned int nbr, int size);
+void	check_lable(t_asm *ass, char *line);
+void	check_last_line(char *buf);
+void	check_command(t_asm *ass, t_command *c_temp, char *line);
+void	check_end_arg_line(t_arg_error *err, t_command *c_temp,
+	int i, t_asm *ass);
+void	check_begin_arg_line(t_arg_error *err, t_command *c_temp, int i,
+		t_asm *ass);
+void	push_command(t_asm *ass, t_command *c_temp, int index, char *line);
+t_labels *get_label_list(t_command *c_temp);
+t_command *get_cmd_list(t_asm *ass);
+char *get_error_line_address(t_arg_error *err);
+void	push_lable(t_asm *ass, char *line);
+void	count_codage(int i, int type, t_command *c_temp);
+void	check_valid_separator(t_asm *ass, char *line, int index);
+int		end_header_line(char **line, t_asm *ass);
+
+#endif
