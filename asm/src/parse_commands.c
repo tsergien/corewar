@@ -97,4 +97,4 @@ void	parse_commands(t_asm *ass)
 		syntax_error(line, line + ft_strlen(line), ass->line_number, "END");
 	check_last_line(line);
 	free(line);
-}
+ }

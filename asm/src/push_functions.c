@@ -62,7 +62,7 @@ void	push_tind(t_arg_error *err, t_command *c_temp, t_asm *ass)
 		c_temp->args[err->i].num_value = ft_atoi(*err->args);
 	else
 		syntax_error(ass->begin_line, get_error_line_address(err),
-		ass->line_number, "INSTRUCTION");
+		ass->line_number, "dINSTRUCTION");
 	c_temp->args[err->i].size_of_arg = 2;
 	c_temp->args[err->i].type_of_arg = T_IND;
 	count_codage(err->i, T_IND, c_temp);
@@ -116,7 +116,7 @@ void	push_command(t_asm *ass, t_command *c_temp, int index, char *line)
 		syntax_error(ass->begin_line, line, ass->line_number, "ENDLINE");
 	args = ft_strsplit(line, SEPARATOR_CHAR);
 	if (!*args || (args[0][0] != ' ' && args[0][0] != '\t'
-		&& args[0][0] != DIRECT_CHAR))
+		&& args[0][0] != DIRECT_CHAR && args[0][0] != '-'))
 		syntax_error(ass->begin_line, line, ass->line_number, "INSTRUCTION");
 	push_args(ass, c_temp, line, args);
 }

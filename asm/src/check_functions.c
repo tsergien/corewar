@@ -19,15 +19,18 @@ void	check_lable(t_asm *ass, char *line)
 	if (!*line || *line == COMMENT_CHAR || *line == ';')
 		return ;
 	temp = line;
-	while (consist(LABEL_CHARS, *line))
-		line++;
-	if (*line == LABEL_CHAR)
-	{
-		*line++ = 0;
-		push_lable(ass, temp);
-	}
-	else
-		check_command(ass, get_cmd_list(ass), temp);
+	if (consist(LABEL_CHARS, *line))
+    {
+        while (consist(LABEL_CHARS, *line))
+            line++;
+        if (*line == LABEL_CHAR)
+        {
+            *line++ = 0;
+            push_lable(ass, temp);
+            return;
+        }
+    }
+    check_command(ass, get_cmd_list(ass), temp);
 }
 
 void	check_last_line(char *buf)
@@ -49,7 +52,7 @@ void	check_last_line(char *buf)
 		else if (buf[i] != '\t' && buf[i] != ' ')
 		{
 			ft_printf("Syntax error - unexpected end of input "
-			"(Perhaps you forgot to end with a newline ?");
+			"(Perhaps you forgot to end with a newline ?)\n");
 			exit(0);
 		}
 		i++;

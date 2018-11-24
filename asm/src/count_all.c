@@ -45,6 +45,8 @@ void	args_str_value_to_num_value(t_asm *ass)
 	while (cmd)
 	{
 		i = 0;
+		if (!cmd->opcode)
+			break ;
 		while (i < g_op_tab[cmd->index].args_amount)
 		{
 			if (cmd->args[i].str_value)
