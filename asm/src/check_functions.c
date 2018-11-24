@@ -20,17 +20,17 @@ void	check_lable(t_asm *ass, char *line)
 		return ;
 	temp = line;
 	if (consist(LABEL_CHARS, *line))
-    {
-        while (consist(LABEL_CHARS, *line))
-            line++;
-        if (*line == LABEL_CHAR)
-        {
-            *line++ = 0;
-            push_lable(ass, temp);
-            return;
-        }
-    }
-    check_command(ass, get_cmd_list(ass), temp);
+	{
+		while (consist(LABEL_CHARS, *line))
+			line++;
+		if (*line == LABEL_CHAR)
+		{
+			*line++ = 0;
+			push_lable(ass, temp);
+			return ;
+		}
+	}
+	check_command(ass, get_cmd_list(ass), temp);
 }
 
 void	check_last_line(char *buf)
