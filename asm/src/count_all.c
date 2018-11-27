@@ -12,6 +12,25 @@
 
 #include "../includes/op.h"
 
+void	count_reverse_codage(int i, t_command *c_temp)
+{
+	unsigned char value;
+
+	value = 0;
+	if (g_op_tab[c_temp->index].codage)
+	{
+		if (i == 0)
+			value = 3 & (c_temp->codage >> 6);
+		else if (i == 1)
+			value = 3 & (c_temp->codage >> 4);
+		else if (i == 2)
+			value = 3 & (c_temp->codage >> 2);
+	}
+	else
+		value = 2;
+	get_type_and_size_of_args(i, c_temp, value);
+}
+
 void	swap_lable_to_nbr(t_arg *arg, t_command *current_cmd,
 	t_command *cmd_lst)
 {

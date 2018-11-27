@@ -15,7 +15,7 @@ NAME = asm
 
 SRC_FILES =  main.c op.c parse_header.c errors.c parse_commands.c count_all.c \
 			some_functions_xd.c write_file.c bonus.c  check_functions.c \
-			push_functions.c get_functions.c 
+			push_functions.c get_functions.c read_binary.c
 
 SRC_DIR = src/
 SRC = $(addprefix $(SRC_DIR), $(SRC_FILES))

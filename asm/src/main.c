@@ -55,20 +55,25 @@ int		main(int argc, char **argv)
 {
 	t_asm ass;
 
+	g_printf_fd = 1;
 	flags(argv, &ass, argc);
 	check_file(&ass, argc);
-	parse_header(&ass);
-	parse_commands(&ass);
-	close(ass.fd);
-	count_size(&ass);
+	if (ass.flags.flag_p || !ass.flags.flag_r)
+	{
+		parse_header(&ass);
+		parse_commands(&ass);
+		count_size(&ass);
+	}
 	if (ass.flags.flag_p)
 		bonus_flag_info(&ass);
 	else if (ass.flags.flag_r)
-		ft_printf("reverse ept file nahui\n");
+		read_binary(&ass);
 	else
 	{
 		write_file(&ass);
 		ft_printf("Writing output program to %s\n", ass.binary_name);
 	}
+	close(ass.binary_fd);
+	close(ass.fd);
 	return (0);
 }

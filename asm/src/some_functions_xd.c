@@ -12,6 +12,12 @@
 
 #include "../includes/op.h"
 
+void	bonus_r_error(const char *err)
+{
+	ft_printf("[Error] %s\n", err);
+	exit(0);
+}
+
 void	simple_error(const char *str, int line_number)
 {
 	ft_printf("[Error] Line %d. %s.\n", line_number, str);
@@ -46,4 +52,26 @@ void	get_str_value(t_arg_error *err, t_command *c_temp)
 		k++;
 	temp[k] = 0;
 	c_temp->args[err->i].str_value = temp;
+}
+
+void	make_code_file(t_asm *ass)
+{
+	char *dot;
+
+	dot = ft_strchr(ass->binary_name, '.');
+	while (dot)
+	{
+		if (ft_strnequ(dot, ".cor", 4))
+		{
+			*dot = 0;
+			ft_strcat(ass->binary_name, ".s");
+			break ;
+		}
+		dot++;
+		dot = ft_strchr(dot, '.');
+	}
+	if (!dot)
+		ft_strcpy(ass->binary_name, ".cor");
+	ass->fd = open(ass->binary_name,
+		O_RDWR | O_TRUNC | O_CREAT | O_CREAT, 0555);
 }

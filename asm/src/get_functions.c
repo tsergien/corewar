@@ -12,6 +12,39 @@
 
 #include "../includes/op.h"
 
+int			get_index(int opcode)
+{
+	int i;
+
+	i = 0;
+	while (i < 16)
+	{
+		if (opcode == g_op_tab[i].opcode)
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
+void		get_type_and_size_of_args(int i, t_command *c_temp, int value)
+{
+	if (value == 1)
+	{
+		c_temp->args[i].type_of_arg = T_REG;
+		c_temp->args[i].size_of_arg = 1;
+	}
+	else if (value == 2)
+	{
+		c_temp->args[i].type_of_arg = T_DIR;
+		c_temp->args[i].size_of_arg = g_op_tab[c_temp->index].label_size;
+	}
+	else if (value == 3)
+	{
+		c_temp->args[i].type_of_arg = T_IND;
+		c_temp->args[i].size_of_arg = 2;
+	}
+}
+
 char		*get_error_line_address(t_arg_error *err)
 {
 	return (err->line + err->count + err->i);
