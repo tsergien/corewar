@@ -25,7 +25,7 @@ OBJ_DIR = obj/
 OBJ = $(addprefix $(OBJ_DIR), $(OBJ_FILES))
 
 HEADER = includes/
-LIB_DIR = ./libft/
+LIB_DIR = ./lib/
 
 WWW = -Wall -Wextra -Werror
 

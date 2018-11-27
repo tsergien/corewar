@@ -14,7 +14,7 @@
 # define OP_H
 
 # include <fcntl.h>
-# include "../libft/include/libft.h"
+# include "../lib/include/libft.h"
 
 # define IND_SIZE				2
 # define REG_SIZE				4
