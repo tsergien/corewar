@@ -16,6 +16,8 @@ void	check_lable(t_asm *ass, char *line)
 {
 	char	*temp;
 
+	while (*line == ' ' || *line == '\t')
+		line++;
 	if (!*line || *line == COMMENT_CHAR || *line == ';')
 		return ;
 	temp = line;
@@ -33,11 +35,13 @@ void	check_lable(t_asm *ass, char *line)
 	check_command(ass, get_cmd_list(ass), temp);
 }
 
-void	check_last_line(char *buf)
+void	check_last_line(char *buf, t_asm *ass)
 {
 	int i;
 
 	i = 0;
+	if (!ass->cmd_lst)
+		syntax_error(buf, buf + ft_strlen(buf), ass->line_number, "END");
 	while (buf[i])
 	{
 		if (buf[i] == '\n')

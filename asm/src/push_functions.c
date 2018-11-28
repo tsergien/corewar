@@ -78,6 +78,7 @@ void	push_args(t_asm *ass, t_command *c_temp, char *line, char **args)
 	err.line = line;
 	while (*err.args)
 	{
+		err.temp = *err.args;
 		check_begin_arg_line(&err, c_temp, ass);
 		if (g_op_tab[c_temp->index].args[err.i] & T_REG)
 			push_treg(&err, c_temp, ass);
@@ -87,6 +88,7 @@ void	push_args(t_asm *ass, t_command *c_temp, char *line, char **args)
 		&& !c_temp->args[err.i].size_of_arg)
 			push_tind(&err, c_temp, ass);
 		check_end_arg_line(&err, c_temp, ass);
+		free(err.temp);
 		err.args++;
 		err.i++;
 	}
@@ -119,4 +121,5 @@ void	push_command(t_asm *ass, t_command *c_temp, int index, char *line)
 		&& args[0][0] != DIRECT_CHAR && args[0][0] != '-'))
 		syntax_error(ass->begin_line, line, ass->line_number, "INSTRUCTION");
 	push_args(ass, c_temp, line, args);
+	free(args);
 }

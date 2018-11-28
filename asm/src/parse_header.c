@@ -120,7 +120,10 @@ void	parse_header(t_asm *ass)
 		ass->last_line_size = ft_strlen(ass->begin_line);
 		line = ass->begin_line;
 		if (*line == '\0')
+		{
+			free(ass->begin_line);
 			continue ;
+		}
 		if (check_line(&line, ass->line_number))
 			parse_dot(ass, line);
 		if (ass->header.comment_exist && ass->header.name_exist)

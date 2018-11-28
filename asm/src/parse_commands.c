@@ -81,20 +81,20 @@ void	parse_commands(t_asm *ass)
 		ass->last_line_size = ft_strlen(ass->begin_line);
 		ass->line_number++;
 		if (!*line)
+		{
+			free(ass->begin_line);
 			continue;
-		while (*line == ' ' || *line == '\t')
-			line++;
+		}
 		check_lable(ass, line);
 		free(ass->begin_line);
 	}
+	free(ass->begin_line);
 	line = (char *)malloc(ass->last_line_size + 2);
 	lseek(ass->fd, -ass->last_line_size, SEEK_CUR);
 	ft_bzero(line, ass->last_line_size + 2);
 	read(ass->fd, line, ass->last_line_size + 2);
 	if (ass->last_line_size == 0)
 		ass->line_number++;
-	if (!ass->cmd_lst)
-		syntax_error(line, line + ft_strlen(line), ass->line_number, "END");
-	check_last_line(line);
+	check_last_line(line, ass);
 	free(line);
 }
