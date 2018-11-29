@@ -42,7 +42,7 @@ void	check_exist(int i, int size, t_asm *ass)
 {
 	if (i >= size)
 	{
-		ft_printf("[Error handled] %s is too big.\n",
+		ft_printf("[Error] %s is too big.\n",
 		size == PROG_NAME_LENGTH ? "Name" : "Comment");
 		exit(0);
 	}

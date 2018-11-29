@@ -78,6 +78,7 @@ void	push_args(t_asm *ass, t_command *c_temp, char *line, char **args)
 	err.line = line;
 	while (*err.args)
 	{
+		err.count++;
 		err.temp = *err.args;
 		check_begin_arg_line(&err, c_temp, ass);
 		if (g_op_tab[c_temp->index].args[err.i] & T_REG)
