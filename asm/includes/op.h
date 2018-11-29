@@ -109,6 +109,7 @@ typedef struct			s_arg_error
 	int					count;
 	int					i;
 	char				*line;
+	char				*temp;
 }						t_arg_error;
 
 typedef struct			s_flag
@@ -151,7 +152,7 @@ void					bonus_flag_info(t_asm *ass);
 void					write_file(t_asm *ass);
 int						reverse_byte(unsigned int nbr, int size);
 void					check_lable(t_asm *ass, char *line);
-void					check_last_line(char *buf);
+void					check_last_line(char *buf, t_asm *ass);
 void					check_command(t_asm *ass,
 						t_command *c_temp, char *line);
 void					check_end_arg_line(t_arg_error *err,

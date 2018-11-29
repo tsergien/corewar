@@ -29,6 +29,8 @@ void	syntax_error(char *start, char *line, int line_number, char *type)
 {
 	ft_printf("Syntax error at token [TOKEN][%03d:%03d] %s \"",
 	line_number, line - start + 1, type);
+	if (!*line)
+		ft_putstr("(null)");
 	while (*line && *line != '"' && *line != ',')
 		ft_putchar(*line++);
 	ft_putstr("\"\n");

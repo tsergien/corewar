@@ -42,7 +42,7 @@ void	check_exist(int i, int size, t_asm *ass)
 {
 	if (i >= size)
 	{
-		ft_printf("[Error handled] %s is too big.\n",
+		ft_printf("[Error] %s is too big.\n",
 		size == PROG_NAME_LENGTH ? "Name" : "Comment");
 		exit(0);
 	}
@@ -120,7 +120,10 @@ void	parse_header(t_asm *ass)
 		ass->last_line_size = ft_strlen(ass->begin_line);
 		line = ass->begin_line;
 		if (*line == '\0')
+		{
+			free(ass->begin_line);
 			continue ;
+		}
 		if (check_line(&line, ass->line_number))
 			parse_dot(ass, line);
 		if (ass->header.comment_exist && ass->header.name_exist)
