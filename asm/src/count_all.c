@@ -41,7 +41,7 @@ void	swap_lable_to_nbr(t_arg *arg, t_command *current_cmd,
 		temp_label = cmd_lst->label;
 		while (temp_label)
 		{
-			if (ft_strequ(arg->str_value, cmd_lst->label->label))
+			if (ft_strequ(arg->str_value, temp_label->label))
 			{
 				arg->num_value = cmd_lst->size_before -
 				current_cmd->size_before;
